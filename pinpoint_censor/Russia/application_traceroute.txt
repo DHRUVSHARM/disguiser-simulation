@@ -1,0 +1,80 @@
+➜  Desktop sudo python3 pinpoint_censor.py dns anonymouse.org 128.4.12.93
+Password:
+ttl = 1 	 {'timestamp': 1590117421, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.186.35.1'}
+ttl = 2 	 {'timestamp': 1590117423, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '31.192.111.129'}
+ttl = 3 	 {'timestamp': 1590117424, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '91.218.245.203'}
+ttl = 4 	 {'timestamp': 1590117425, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '91.218.245.205'}
+ttl = 5 	 {'timestamp': 1590117429, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+ttl = 6 	 {'timestamp': 1590117432, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+ttl = 7 	 {'timestamp': 1590117436, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1590117438, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+ttl = 9 	 {'timestamp': 1590117439, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.72.105'}
+ttl = 10 	 {'timestamp': 1590117440, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.38.209'}
+ttl = 11 	 {'timestamp': 1590117442, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.56.93'}
+ttl = 12 	 {'timestamp': 1590117443, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.30.185'}
+ttl = 13 	 {'timestamp': 1590117444, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.3.142'}
+ttl = 14 	 {'timestamp': 1590117445, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.7.2'}
+ttl = 15 	 {'timestamp': 1590117447, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.67.233'}
+ttl = 16 	 {'timestamp': 1590117448, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.68.14'}
+ttl = 17 	 {'timestamp': 1590117449, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.68.14'}
+ttl = 18 	 {'timestamp': 1590117451, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.139'}
+ttl = 19 	 {'timestamp': 1590117452, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.139'}
+ttl = 20 	 {'timestamp': 1590117453, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.18'}
+ttl = 21 	 {'timestamp': 1590117460, 'status': 'success', 'rcode': 0, 'ip_list': ['0.0.0.0'], 'is_timeout': False, 'device': '*'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py http anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1590117559, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.186.35.1'}
+ttl = 2 	 {'timestamp': 1590117561, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '31.192.111.129'}
+ttl = 3 	 {'timestamp': 1590117562, 'status': 'success', 'status_code': 302, 'text': '', 'headers': {'Server': 'nginx/1.0.15', 'Content-Type': 'text/html', 'Content-Length': '0', 'Connection': 'close', 'Location': 'http://blockpage.hostkey.ru'}, 'is_timeout': False, 'device': '91.218.245.205'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py sni anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1590117569, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.186.35.1'}
+ttl = 2 	 {'timestamp': 1590117570, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '31.192.111.129'}
+ttl = 3 	 {'timestamp': 1590117571, 'cert_serial': '0', 'status': 'fail', 'is_timeout': False, 'device': '!'}
+➜  Desktop
+
+
+
+
+
+
+
+
+
+
+
+➜  Desktop sudo python3 pinpoint_censor.py dns 15minut.org 3.91.105.244
+ttl = 1 	 {'timestamp': 1592528892, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592528895, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '213.183.56.1'}
+ttl = 3 	 {'timestamp': 1592528898, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '195.239.20.145'}
+ttl = 4 	 {'timestamp': 1592528901, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '79.104.225.34'}
+ttl = 5 	 {'timestamp': 1592528905, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '206.126.236.35'}
+ttl = 6 	 {'timestamp': 1592528908, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '54.239.111.240'}
+ttl = 7 	 {'timestamp': 1592528911, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '52.93.114.25'}
+ttl = 8 	 {'timestamp': 1592528915, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+
+
+
+➜  Desktop sudo python3 pinpoint_censor.py http 15minut.org 52.91.166.212
+ttl = 1 	 {'timestamp': 1592529035, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592529039, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '213.183.56.1'}
+ttl = 3 	 {'timestamp': 1592529044, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '195.239.20.145'}
+ttl = 4 	 {'timestamp': 1592529046, 'status': 'success', 'status_code': 302, 'text': '<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">\n<TITLE>302 Found</TITLE></HEAD><BODY>\n<H1>302 Found</H1>\nThe document has moved\n<A HREF="http://blackhole.beeline.ru/?url=15minut.org%2F">here</A>\n</BODY></HTML>\r\n\r\n', 'headers': {'Content-Length': '244', 'Location': 'http://blackhole.beeline.ru/?url=15minut.org%2F', 'Content-Type': 'text/html; charset=UTF-8'}, 'is_timeout': False, 'device': '*'}
+
+
+
+➜  Desktop sudo python3 pinpoint_censor.py sni 15minut.org 18.207.203.33
+ttl = 1 	 {'timestamp': 1592529197, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592529200, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '213.183.56.1'}
+ttl = 3 	 {'timestamp': 1592529204, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '195.239.20.145'}
+ttl = 4 	 {'timestamp': 1592529207, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 5 	 {'timestamp': 1592529212, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 6 	 {'timestamp': 1592529216, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 7 	 {'timestamp': 1592529221, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1592529225, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 9 	 {'timestamp': 1592529230, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+

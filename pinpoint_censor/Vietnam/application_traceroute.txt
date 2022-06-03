@@ -1,0 +1,55 @@
+➜  Desktop sudo python3 pinpoint_censor.py http www.vietnamdaily.com 52.91.166.212
+ttl = 1 	 {'timestamp': 1590124054, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124058, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '103.9.78.254'}
+ttl = 3 	 {'timestamp': 1590124063, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '172.30.1.3'}
+ttl = 4 	 {'timestamp': 1590124069, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '113.171.48.73'}
+ttl = 5 	 {'timestamp': 1590124073, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '113.171.45.33'}
+ttl = 6 	 {'timestamp': 1590124079, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 7 	 {'timestamp': 1590124086, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1590124091, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 9 	 {'timestamp': 1590124097, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+➜  Desktop sudo python3 pinpoint_censor.py sni www.vietnamdaily.com 18.207.203.33
+ttl = 1 	 {'timestamp': 1590124179, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124183, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '103.9.78.254'}
+ttl = 3 	 {'timestamp': 1590124186, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '172.30.1.4'}
+ttl = 4 	 {'timestamp': 1590124191, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '113.171.48.89'}
+ttl = 5 	 {'timestamp': 1590124195, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '113.171.45.37'}
+ttl = 6 	 {'timestamp': 1590124200, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '113.171.59.202'}
+ttl = 7 	 {'timestamp': 1590124203, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1590124208, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 9 	 {'timestamp': 1590124214, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 10 	 {'timestamp': 1590124221, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 11 	 {'timestamp': 1590124226, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 12 	 {'timestamp': 1590124231, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 13 	 {'timestamp': 1590124237, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 14 	 {'timestamp': 1590124243, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 15 	 {'timestamp': 1590124247, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 16 	 {'timestamp': 1590124253, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 17 	 {'timestamp': 1590124258, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 18 	 {'timestamp': 1590124265, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 19 	 {'timestamp': 1590124271, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 20 	 {'timestamp': 1590124275, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+ttl = 21 	 {'timestamp': 1590124280, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '*'}
+^Z
+[5]  + 5971 suspended  sudo python3 pinpoint_censor.py sni www.vietnamdaily.com 18.207.203.33
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py dns www.vietnamdaily.com 3.91.105.244
+ttl = 1 	 {'timestamp': 1590124309, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124314, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '103.9.78.254'}
+ttl = 3 	 {'timestamp': 1590124317, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '172.30.1.4'}
+ttl = 4 	 {'timestamp': 1590124321, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '113.171.48.89'}
+ttl = 5 	 {'timestamp': 1590124325, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '113.171.45.77'}
+ttl = 6 	 {'timestamp': 1590124328, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '113.171.50.230'}
+ttl = 7 	 {'timestamp': 1590124332, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '113.171.32.23'}
+ttl = 8 	 {'timestamp': 1590124336, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '113.171.31.219'}
+ttl = 9 	 {'timestamp': 1590124339, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '63.218.115.13'}
+ttl = 10 	 {'timestamp': 1590124343, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '63.218.4.234'}
+ttl = 11 	 {'timestamp': 1590124346, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '63.218.4.234'}
+ttl = 12 	 {'timestamp': 1590124350, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '99.82.180.240'}
+ttl = 13 	 {'timestamp': 1590124354, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '52.95.62.90'}
+ttl = 14 	 {'timestamp': 1590124358, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+ttl = 15 	 {'timestamp': 1590124363, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '*'}
+^Z
+[6]  + 5990 suspended  sudo python3 pinpoint_censor.py dns www.vietnamdaily.com 3.91.105.244

@@ -1,0 +1,17 @@
+➜  ~ sudo traceroute -q 1 -m15 52.91.166.212
+traceroute to 52.91.166.212 (52.91.166.212), 15 hops max, 52 byte packets
+ 1  10.238.0.1 (10.238.0.1)  327.216 ms
+ 2  185-123-101-1.bilrom.com (185.123.101.1)  286.939 ms
+ 3  *
+ 4  10.0.0.189 (10.0.0.189)  286.478 ms
+ 5  212.156.58.189.static.turktelekom.com.tr (212.156.58.189)  413.563 ms
+ 6  16-bursa-h2-1---16-bursa-t3-5.statik.turktelekom.com.tr (81.212.242.44)  292.987 ms
+ 7  00-gayrettepe-xrs-t2-1---16-bursa-h2-1.statik.turktelekom.com.tr (81.212.248.78)  328.045 ms
+ 8  00-ebgp-gayrettepe-k---00-gayrettepe-xrs-t2-1.statik.turktelekom.com.tr (81.212.201.195)  329.310 ms
+ 9  212.156.120.178.26-eskisehir-t3-1.06-ulus-t3-7.statik.turktelekom.com.tr (212.156.120.178)  410.931 ms
+10  308-buk-col-2---00-ebgp-gayrettepe-k.statik.turktelekom.com.tr (212.156.139.62)  336.371 ms
+11  83.217.231.61 (83.217.231.61)  356.944 ms
+12  ae-18.r24.amstnl02.nl.bb.gin.ntt.net (129.250.3.62)  550.048 ms
+13  ae-3.r25.amstnl02.nl.bb.gin.ntt.net (129.250.4.69)  465.378 ms
+14  ae-5.r23.asbnva02.us.bb.gin.ntt.net (129.250.6.162)  530.321 ms
+15  ae-20.r06.asbnva02.us.bb.gin.ntt.net (129.250.2.133)  463.817 ms

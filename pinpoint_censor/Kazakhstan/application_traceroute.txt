@@ -1,0 +1,94 @@
+➜  Desktop sudo python3 pinpoint_censor.py dns alt.com 128.4.12.93
+Password:
+ttl = 1 	 {'timestamp': 1590124632, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124636, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '78.40.109.1'}
+ttl = 3 	 {'timestamp': 1590124637, 'status': 'success', 'rcode': 0, 'ip_list': ['0.0.0.0'], 'is_timeout': False, 'device': '*'}
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py http alt.com 128.4.12.93
+ttl = 1 	 {'timestamp': 1590124746, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124751, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '78.40.109.1'}
+ttl = 3 	 {'timestamp': 1590124755, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '195.93.153.17'}
+ttl = 4 	 {'timestamp': 1590124761, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 5 	 {'timestamp': 1590124767, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 6 	 {'timestamp': 1590124773, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 7 	 {'timestamp': 1590124778, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1590124784, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+^Z
+[7]  + 6285 suspended  sudo python3 pinpoint_censor.py http alt.com 128.4.12.93
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py sni alt.com 128.4.12.93
+ttl = 1 	 {'timestamp': 1590124791, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590124794, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '78.40.109.1'}
+ttl = 3 	 {'timestamp': 1590124798, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '195.93.153.17'}
+ttl = 4 	 {'timestamp': 1590124801, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '37.208.42.201'}
+ttl = 5 	 {'timestamp': 1590124805, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '178.210.33.90'}
+ttl = 6 	 {'timestamp': 1590124808, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '5.187.73.31'}
+ttl = 7 	 {'timestamp': 1590124812, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '149.14.210.81'}
+ttl = 8 	 {'timestamp': 1590124815, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.25.9.45'}
+ttl = 9 	 {'timestamp': 1590124819, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.37.29'}
+ttl = 10 	 {'timestamp': 1590124822, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.58.238'}
+ttl = 11 	 {'timestamp': 1590124826, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '66.28.4.197'}
+ttl = 12 	 {'timestamp': 1590124829, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.5.2'}
+
+
+
+
+
+
+
+
+➜  Desktop sudo python3 pinpoint_censor.py dns anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1592520411, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592520414, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '185.120.78.1'}
+ttl = 3 	 {'timestamp': 1592520418, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '91.185.12.193'}
+ttl = 4 	 {'timestamp': 1592520421, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '91.185.5.42'}
+ttl = 5 	 {'timestamp': 1592520424, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '178.210.33.90'}
+ttl = 6 	 {'timestamp': 1592520428, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '5.187.73.31'}
+ttl = 7 	 {'timestamp': 1592520431, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '149.14.210.81'}
+ttl = 8 	 {'timestamp': 1592520434, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.25.9.45'}
+ttl = 9 	 {'timestamp': 1592520438, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.37.29'}
+ttl = 10 	 {'timestamp': 1592520441, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.58.234'}
+ttl = 11 	 {'timestamp': 1592520445, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.27.169'}
+ttl = 12 	 {'timestamp': 1592520448, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.3.142'}
+ttl = 13 	 {'timestamp': 1592520451, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.25.142'}
+ttl = 14 	 {'timestamp': 1592520455, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.67.233'}
+ttl = 15 	 {'timestamp': 1592520458, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.68.14'}
+ttl = 16 	 {'timestamp': 1592520461, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '38.112.7.62'}
+ttl = 17 	 {'timestamp': 1592520465, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.191'}
+ttl = 18 	 {'timestamp': 1592520468, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.133'}
+ttl = 19 	 {'timestamp': 1592520472, 'status': 'success', 'rcode': 0, 'ip_list': ['100.100.100.100'], 'is_timeout': False, 'device': '*'}
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py http anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1592520497, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592520501, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '185.120.78.1'}
+ttl = 3 	 {'timestamp': 1592520506, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '91.185.12.193'}
+ttl = 4 	 {'timestamp': 1592520510, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '91.185.5.42'}
+ttl = 5 	 {'timestamp': 1592520515, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 6 	 {'timestamp': 1592520521, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 7 	 {'timestamp': 1592520526, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 8 	 {'timestamp': 1592520532, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 9 	 {'timestamp': 1592520540, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 10 	 {'timestamp': 1592520545, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+ttl = 11 	 {'timestamp': 1592520552, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '*'}
+^Z
+[27]  + 24067 suspended  sudo python3 pinpoint_censor.py http anonymouse.org 128.4.12.93
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py sni anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1592520560, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.5.0.1'}
+ttl = 2 	 {'timestamp': 1592520563, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '185.120.78.1'}
+ttl = 3 	 {'timestamp': 1592520566, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '91.185.12.193'}
+ttl = 4 	 {'timestamp': 1592520570, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '91.185.5.189'}
+ttl = 5 	 {'timestamp': 1592520573, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '178.210.33.90'}
+ttl = 6 	 {'timestamp': 1592520576, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '5.187.73.31'}
+ttl = 7 	 {'timestamp': 1592520580, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '149.14.210.81'}
+ttl = 8 	 {'timestamp': 1592520583, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.25.9.45'}
+ttl = 9 	 {'timestamp': 1592520586, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.37.29'}
+ttl = 10 	 {'timestamp': 1592520590, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.58.234'}
+ttl = 11 	 {'timestamp': 1592520593, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.27.169'}
+ttl = 12 	 {'timestamp': 1592520597, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.3.142'}
+^Z
+[28]  + 24085 suspended  sudo python3 pinpoint_censor.py sni anonymouse.org 128.4.12.93

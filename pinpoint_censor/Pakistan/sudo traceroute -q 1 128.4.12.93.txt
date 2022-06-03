@@ -1,0 +1,32 @@
+➜  ~ sudo traceroute -q 1 128.4.12.93
+traceroute to 128.4.12.93 (128.4.12.93), 64 hops max, 52 byte packets
+ 1  connect.ios.astrill.com (198.18.0.1)  225.679 ms
+ 2  103-86-135-177.mispl.pk (103.86.135.177)  230.808 ms
+ 3  tw197-static165.tw1.com (110.93.197.165)  235.786 ms
+ 4  110.93.254.142 (110.93.254.142)  307.993 ms
+ 5  110.93.252.164 (110.93.252.164)  241.601 ms
+ 6  ae7.palermo4.pal.seabone.net (195.22.198.36)  371.623 ms
+ 7  ae23.franco31.fra.seabone.net (195.22.211.48)  396.752 ms
+ 8  *
+ 9  be2799.ccr41.par01.atlas.cogentco.com (154.54.58.234)  408.536 ms
+10  be3627.ccr41.jfk02.atlas.cogentco.com (66.28.4.197)  532.072 ms
+
+
+
+
+
+lin@hnw-PowerEdge-T630:~$ sudo python3 pinpoint_censor.py badoo.com 103.86.135.171
+ttl = 1 	 {'timestamp': 1589940521, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '128.4.12.1'}
+ttl = 2 	 {'timestamp': 1589940525, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '128.175.111.132'}
+ttl = 3 	 {'timestamp': 1589940529, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '128.175.111.101'}
+ttl = 4 	 {'timestamp': 1589940534, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '50.204.84.241'}
+ttl = 5 	 {'timestamp': 1589940538, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '162.151.182.205'}
+ttl = 6 	 {'timestamp': 1589940542, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '96.108.182.65'}
+ttl = 7 	 {'timestamp': 1589940547, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '96.108.181.21'}
+ttl = 8 	 {'timestamp': 1589940551, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '68.86.93.173'}
+ttl = 9 	 {'timestamp': 1589940555, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '68.86.85.186'}
+ttl = 10 	 {'timestamp': 1589940559, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '68.86.86.250'}
+ttl = 11 	 {'timestamp': 1589940564, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '75.149.231.198'}
+ttl = 12 	 {'timestamp': 1589940568, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '195.22.214.131'}
+ttl = 13 	 {'timestamp': 1589940572, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '195.22.214.235'}
+<html><head><title>Surf Safely</title></head><body><h1>&nbsp;</h1><div><h1><span style=\"font-size:48px;\"><span style=\"color: rgb(0, 0, 255);\">Surf Safely!</span></span></h1></div><div>&nbsp;</div><div><span style=\"font-size:28px;\"><strong><span style=\"color: rgb(255, 0, 0);\">This website is not accessible.</span></strong></span></div><div>&nbsp;</div><div>&nbsp;</div><div><span style=\"font-size:26px;\">The site you are trying to access contains content that is&nbsp;prohibited for viewership from within Pakistan.</span></div></body></html>

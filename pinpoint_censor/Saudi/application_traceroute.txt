@@ -1,0 +1,51 @@
+➜  Desktop sudo python3 pinpoint_censor.py dns anonymouse.org 128.4.12.93
+Password:
+ttl = 1 	 {'timestamp': 1590123174, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590123178, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '46.151.211.1'}
+ttl = 3 	 {'timestamp': 1590123182, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '51.211.160.206'}
+ttl = 4 	 {'timestamp': 1590123186, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.188.193.40'}
+ttl = 5 	 {'timestamp': 1590123189, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.188.193.43'}
+ttl = 6 	 {'timestamp': 1590123193, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.188.195.73'}
+ttl = 7 	 {'timestamp': 1590123197, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '149.14.127.25'}
+ttl = 8 	 {'timestamp': 1590123200, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '130.117.50.165'}
+ttl = 9 	 {'timestamp': 1590123204, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.27.169'}
+ttl = 10 	 {'timestamp': 1590123207, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.5.2'}
+ttl = 11 	 {'timestamp': 1590123211, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.25.142'}
+ttl = 12 	 {'timestamp': 1590123215, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.67.233'}
+ttl = 13 	 {'timestamp': 1590123219, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.68.14'}
+ttl = 14 	 {'timestamp': 1590123223, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '38.112.7.62'}
+ttl = 15 	 {'timestamp': 1590123227, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.139'}
+ttl = 16 	 {'timestamp': 1590123230, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.18'}
+ttl = 17 	 {'timestamp': 1590123241, 'status': 'success', 'rcode': 0, 'ip_list': ['0.0.0.0'], 'is_timeout': False, 'device': '*'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py http anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1590123253, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590123257, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '46.151.211.1'}
+ttl = 3 	 {'timestamp': 1590123261, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '51.211.160.206'}
+ttl = 4 	 {'timestamp': 1590123266, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.188.193.40'}
+ttl = 5 	 {'timestamp': 1590123270, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.188.193.45'}
+ttl = 6 	 {'timestamp': 1590123275, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '84.235.12.117'}
+ttl = 7 	 {'timestamp': 1590123279, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.188.195.73'}
+ttl = 8 	 {'timestamp': 1590123283, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '149.14.127.25'}
+ttl = 9 	 {'timestamp': 1590123288, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '130.117.49.153'}
+ttl = 10 	 {'timestamp': 1590123292, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '154.54.27.169'}
+ttl = 11 	 {'timestamp': 1590123296, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '154.54.5.2'}
+ttl = 12 	 {'timestamp': 1590123298, 'status': 'success', 'status_code': 403, 'text': '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html dir="rtl"><head><title> Blocked URL العنوان محجوب </title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <style type="text/css"><!--* { padding:0; margin:0; font-family:"Verdana", "Arial"; }BODY { text-align:center; }A, A:VISITED { color:blue; } table td { padding:20px 20px; width:50%; }table hr { background-color:#bfe081; border:0; color:#bfe081; height:3px; margin:0 15%; text-align:center; } #wrapper { margin:28px auto; width:985px; }.arabic { font-size:100% }.english { font-size:80% } #r1 { background:#86b72d; border-bottom:20px solid #bfe081; color:white; font-family:"Tahoma"; font-weight:Bold; font-size:110% } #r1 .arabic { text-align:right; } #r1 .english { text-align:left; } #r1 td { border-bottom:20px solid #bfe081; } #r4 { font-size:145%; font-weight:Bold; } #r5 { font-weight:Bold; } #r5 td { border-bottom:47px solid #bfe081; }--></style></head> <body> <div id="wrapper"> <table width="100%" cellspacing="0"><tr id="r1"><td dir="rtl" class="arabic">عزيزي المستخدم،</td><td dir="ltr" class="english">Dear User,</td></tr> <tr id="r2"><td dir="rtl" class="arabic"><h1>عفواً، الموقع المطلوب غير متاح.</h1></td><td dir="ltr" class="english"><h1>Sorry, the requested page is unavailable.</h1></td></tr> <tr id="r3"><td><hr/></td><td><hr/></td></tr> <tr id="r4"><td dir="rtl" class="arabic">إن كنت ترى أن هذه الصفحة ينبغي أن لا تُحجب تفضل <a href="http://www.internet.gov.sa/resources-ar/block-unblock-request-ar/view?set_language=ar">بالضغط هنا</a>.</td><td dir="ltr" class="english">If you believe the requested page should not be blocked please <a href="http://www.internet.gov.sa/resources/block-unblock-request/view?set_language=en">click here</a>.</td></tr> <tr id="r5"><td dir="rtl" class="arabic">لمزيد من المعلومات عن خدمة الإنترنت في المملكة العربية السعودية، يمكنك زيارة الموقع التالي: <a href="http://www.internet.gov.sa/view?set_language=ar" class="english">www.internet.gov.sa</a></td><td dir="ltr" class="english">For more information about internet service in Saudi Arabia, please click here: <a href="http://www.internet.gov.sa/view?set_language=en">www.internet.gov.sa</a></td></tr></table> </div> </body></html>', 'headers': {'Server': 'Protected by WireFilter 8000 (RY-WF06-FB04)', 'Content-Length': '2457', 'Connection': 'close', 'Content-Type': 'text/html', 'Expires': 'Sat, 01 Jan 2000 11:11:11 GMT'}, 'is_timeout': False, 'device': '154.54.25.142'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py sni anonymouse.org 128.4.12.93
+ttl = 1 	 {'timestamp': 1590123307, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.238.0.1'}
+ttl = 2 	 {'timestamp': 1590123311, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '46.151.211.1'}
+ttl = 3 	 {'timestamp': 1590123314, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '51.211.160.206'}
+ttl = 4 	 {'timestamp': 1590123318, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.188.193.40'}
+ttl = 5 	 {'timestamp': 1590123321, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.188.193.45'}
+ttl = 6 	 {'timestamp': 1590123324, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '84.235.94.29'}
+ttl = 7 	 {'timestamp': 1590123328, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '10.188.195.12'}
+ttl = 8 	 {'timestamp': 1590123331, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '149.14.127.25'}
+ttl = 9 	 {'timestamp': 1590123335, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '130.117.49.153'}
+ttl = 10 	 {'timestamp': 1590123339, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.27.169'}
+ttl = 11 	 {'timestamp': 1590123342, 'cert_serial': '0', 'status': 'fail', 'is_timeout': True, 'device': '154.54.3.142'}
+ttl = 12 	 {'timestamp': 1590123346, 'cert_serial': '0', 'status': 'fail', 'is_timeout': False, 'device': '!'}

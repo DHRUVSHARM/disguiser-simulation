@@ -1,0 +1,39 @@
+➜  Desktop sudo python3 pinpoint_censor.py dns intimby.net 128.4.12.93
+ttl = 1 	 {'timestamp': 1590118115, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '10.100.0.1'}
+ttl = 2 	 {'timestamp': 1590118117, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '185.66.69.1'}
+ttl = 3 	 {'timestamp': 1590118119, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '178.124.134.97'}
+ttl = 4 	 {'timestamp': 1590118122, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '178.124.134.217'}
+ttl = 5 	 {'timestamp': 1590118124, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '86.57.255.113'}
+ttl = 6 	 {'timestamp': 1590118126, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '93.85.80.38'}
+ttl = 7 	 {'timestamp': 1590118128, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '93.85.80.94'}
+ttl = 8 	 {'timestamp': 1590118131, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '213.248.96.178'}
+ttl = 9 	 {'timestamp': 1590118136, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '62.115.143.90'}
+ttl = 10 	 {'timestamp': 1590118138, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '62.115.114.89'}
+ttl = 11 	 {'timestamp': 1590118141, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '130.117.14.37'}
+ttl = 12 	 {'timestamp': 1590118143, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.39.37'}
+ttl = 13 	 {'timestamp': 1590118145, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.38.209'}
+ttl = 14 	 {'timestamp': 1590118148, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '130.117.51.41'}
+ttl = 15 	 {'timestamp': 1590118151, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.56.130'}
+ttl = 16 	 {'timestamp': 1590118153, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.3.142'}
+ttl = 17 	 {'timestamp': 1590118155, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.54.5.2'}
+ttl = 18 	 {'timestamp': 1590118158, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.67.233'}
+ttl = 19 	 {'timestamp': 1590118160, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.67.233'}
+ttl = 20 	 {'timestamp': 1590118162, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '154.24.68.14'}
+ttl = 21 	 {'timestamp': 1590118164, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.191'}
+ttl = 22 	 {'timestamp': 1590118167, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.191'}
+ttl = 23 	 {'timestamp': 1590118169, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '128.175.111.133'}
+ttl = 24 	 {'timestamp': 1590118173, 'status': 'success', 'rcode': 0, 'ip_list': ['0.0.0.0'], 'is_timeout': False, 'device': '*'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py http intimby.net 128.4.12.93
+ttl = 1 	 {'timestamp': 1590118194, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '10.100.0.1'}
+ttl = 2 	 {'timestamp': 1590118197, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '185.66.69.1'}
+ttl = 3 	 {'timestamp': 1590118200, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '178.124.134.97'}
+ttl = 4 	 {'timestamp': 1590118203, 'status': 'fail', 'status_code': 0, 'text': '', 'headers': {}, 'is_timeout': True, 'device': '178.124.134.217'}
+ttl = 5 	 {'timestamp': 1590118205, 'status': 'success', 'status_code': 302, 'text': '', 'headers': {'Content-Type': 'text/html', 'Location': 'http://82.209.230.23'}, 'is_timeout': False, 'device': '86.57.255.113'}
+➜  Desktop
+➜  Desktop
+➜  Desktop
+➜  Desktop sudo python3 pinpoint_censor.py sni intimby.net 128.4.12.93
+ttl = 1 	 {'timestamp': 1590118213, 'cert_serial': '0', 'status': 'fail', 'is_timeout': False, 'device': '!'}
