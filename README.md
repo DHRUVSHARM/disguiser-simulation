@@ -8,29 +8,31 @@ The project aims to explore, develop, and deploy a framework that enables end-to
 
 The detail of the framework and a comprehensive measurement study on global censorship can be found in our ACM SIGMETRICS’22 paper (https://e2ecensor.github.io/assets/pdf/sigmetrics22.pdf).
 
-#### Data and Code
+#### Notes for Data and Code 
 
 Relevant Dataset:
-- Alexa List
-- Citizen Lab List
+- Alexa List:
+- Citizen Lab List:
 
 Code repository:
-- build\_domain\_category.py
-- build\_domain\_webpage.py
-- category_percentage.py
-- certificates.py
-- dns_heuristics.py
-- filtered_request.py
-- http_heuristics.py
-- pinpoint_censor.py
-- proxy_request.py
-- proxyrack.py
-- proxyrack_client.py
-- proxyrack_process.py
-- reproduce-data.py
-- ripe\_atlas\_client.py
-- ripe\_atlas\_process.py
-- setup.py
-- statistic.py
-- vantage_points.py
-- vpn_client.py
+- build\_domain\_category.py:
+- build\_domain\_webpage.py:
+- category_percentage.py:
+- certificates.py:
+- dns_heuristics.py:
+- filtered_request.py:
+- http_heuristics.py:
+- pinpoint_censor.py:
+- proxy_request.py:
+- proxyrack.py:
+- proxyrack_client.py:
+- proxyrack_process.py:
+- reproduce-data.py:
+- ripe\_atlas\_client.py:
+- ripe\_atlas\_process.py:
+- setup.py:
+- statistic.py:
+- vantage_points.py:
+- vpn_client.py:
+
+#### Results and Observations
