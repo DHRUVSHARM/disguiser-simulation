@@ -23,6 +23,9 @@ Vantage Points:
 - VPN: We use VPN vantage points to conduct the application traceroute to investigate the deployment of censors. There are two additional requirements for a VPN server to carry out such an experiment: (1) the VPN server and its default gateway should not alter the TTL values of our packets so that the
 intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. 
 
+Backend Server Setup:
+-
+
 Code repository:
 - build\_domain\_category.py:
 - build\_domain\_webpage.py:
