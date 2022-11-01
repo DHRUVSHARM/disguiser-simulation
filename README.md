@@ -27,22 +27,22 @@ Backend Server Setup:
 - Backend Server Setup
 
 Code repository:
-- build\_domain\_category.py:
-- build\_domain\_webpage.py:
+- build\_domain\_category.py: 
+- build\_domain\_webpage.py: this code help extract the title and landing page of the sensitive domains in testing list and store the output in separte two files. 
 - category_percentage.py:
 - certificates.py:
 - dns_heuristics.py:
 - filtered_request.py:
 - http_heuristics.py:
-- pinpoint_censor.py:
-- proxy_request.py:
-- proxyrack.py:
-- proxyrack_client.py:
-- proxyrack_process.py:
+- pinpoint_censor.py: perform application traceroute on HTTP proctocol which pinpoints the censor's location on specific router.
+- proxy_request.py: define the data format of responses that collecting from censorship measurements on DNS, HTTP, HTTPS protocol.  
+- proxyrack.py: this code for conducting HTTP experiments on distrubuted residential proxy provided by proxyrack platform, and receving either static payload from the controlled server or censorship. 
+- proxyrack_client.py: define rules/thresholds to obtain as many vantage points as possible from the proxy platforms we used in this experiment.
+- proxyrack_process.py: 
 - reproduce-data.py:
 - ripe\_atlas\_client.py:
 - ripe\_atlas\_process.py:
-- setup.py:
+- setup.py: to store confidential information for other files. 
 - statistic.py:
 - vantage_points.py:
 - vpn_client.py:
