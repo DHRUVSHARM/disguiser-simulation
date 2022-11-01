@@ -6,7 +6,7 @@ The detection of Internet censorship usually requires heavy manual inspection du
 
 The project aims to explore, develop, and deploy a framework that enables end-to-end measurement for accurately and automatically investigating global Internet censorship practices. The key idea is to provide a static payload as ground truth, which can be used to indicate the occurrence of censorship when the static payload has been altered by network devices. Moreover, the deployed end-to-end framework can facilitate extended measurements for investigating more aspects of Internet censorship, for example, pinpointing censor devices’ locations and exploring their policies and deployment.
 
-The detail of the framework and a comprehensive measurement study on global censorship can be found in our ACM SIGMETRICS’22 paper (https://e2ecensor.github.io/assets/pdf/sigmetrics22.pdf).
+The detail of the framework and a comprehensive measurement study on global censorship can be found in our ACM SIGMETRICS’22 **[paper] (https://e2ecensor.github.io/assets/pdf/sigmetrics22.pdf)**.
 
 #### Notes for Data and Code 
 
@@ -15,7 +15,7 @@ Relevant Dataset:
 - Citizen Lab List:
 
 Experiments Data:
-- The datasets that are collected by our framework (and those used in the aforementioned paper) can be obtained [here](https://drive.google.com/drive/u/1/folders/106F_7gkKO-zRqpdyOokGT_Gr-wonRfnk).
+- The datasets that are collected by our framework (and those used in the aforementioned paper) can be obtained **[here](https://drive.google.com/drive/u/1/folders/106F_7gkKO-zRqpdyOokGT_Gr-wonRfnk)**.
 
 Vantage Points:
 - SOCKS proxies:
