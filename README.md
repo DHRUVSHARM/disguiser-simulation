@@ -18,9 +18,10 @@ Experiments Data:
 - The datasets that are collected by our framework (and those used in the aforementioned paper) can be obtained **[here](https://drive.google.com/drive/u/1/folders/106F_7gkKO-zRqpdyOokGT_Gr-wonRfnk)**.
 
 Vantage Points:
-- SOCKS proxies:
-- RIPE Atlas:
-- VPN:
+- SOCKS proxies: We use residential proxies to issue TCP-based DNS queries and HTTP/HTTPS queries through the SOCKS proxies. In our study, we sign-up [ProxyRack](https://www.proxyrack.com/).
+- RIPE Atlas: We use [RIPE Atlas](https://atlas.ripe.net/) to conduct UDP-based DNS tests to complement the results of TCP-based measurement from SOCKS proxies.
+- VPN: We use VPN vantage points to conduct the application traceroute to investigate the deployment of censors. There are two additional requirements for a VPN server to carry out such an experiment: (1) the VPN server and its default gateway should not alter the TTL values of our packets so that the
+intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. 
 
 Code repository:
 - build\_domain\_category.py:
