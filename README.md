@@ -6,13 +6,13 @@ The detection of Internet censorship usually requires heavy manual inspection du
 
 The project aims to explore, develop, and deploy a framework that enables end-to-end measurement for accurately and automatically investigating global Internet censorship practices. The key idea is to provide a static payload as ground truth, which can be used to indicate the occurrence of censorship when the static payload has been altered by network devices. Moreover, the deployed end-to-end framework can facilitate extended measurements for investigating more aspects of Internet censorship, for example, pinpointing censor devices’ locations and exploring their policies and deployment.
 
-The detail of the framework and a comprehensive measurement study on global censorship can be found in our ACM SIGMETRICS’22 **[paper] (https://e2ecensor.github.io/assets/pdf/sigmetrics22.pdf)**.
+The detail of the framework and a comprehensive measurement study on global censorship can be found in our ACM SIGMETRICS’22 **[paper](https://e2ecensor.github.io/assets/pdf/sigmetrics22.pdf)**.
 
 #### Notes for Data and Code 
 
 Relevant Dataset:
-- Alexa List:
-- Citizen Lab List:
+- Alexa List: Amazon's Alexa Top-site list. In our experiments, we use Alexa’s top 1,000 domains as the popular domain list.
+- Citizen Lab List: We also test the sensitive domains by using the test lists provided by [Citizen Lab](https://citizenlab.ca/). The Citizen Lab offers two types of test lists, a global test list and a country-specific test list for certain counties. We compile the country-specific test list with the popular list and global test list to form the domain list for each country. The up-to-date list can be accessed at https://github.com/citizenlab/test-lists/.
 
 Experiments Data:
 - The datasets that are collected by our framework (and those used in the aforementioned paper) can be obtained **[here](https://drive.google.com/drive/u/1/folders/106F_7gkKO-zRqpdyOokGT_Gr-wonRfnk)**.
