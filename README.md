@@ -24,7 +24,7 @@ Vantage Points:
 intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. 
 
 Backend Server Setup:
--
+- Backend Server Setup
 
 Code repository:
 - build\_domain\_category.py:
