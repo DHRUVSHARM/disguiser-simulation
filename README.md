@@ -39,5 +39,3 @@ Code repository:
 - statistic.py:
 - vantage_points.py:
 - vpn_client.py:
-
-#### Results and Observations
