@@ -14,6 +14,11 @@ Relevant Dataset:
 - Alexa List:
 - Citizen Lab List:
 
+Vantage Points:
+- SOCKS proxies:
+- RIPE Atlas:
+- VPN:
+
 Code repository:
 - build\_domain\_category.py:
 - build\_domain\_webpage.py:
