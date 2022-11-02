@@ -24,7 +24,7 @@ Vantage Points:
 intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. 
 
 Backend Server Setup:
-- Backend Server Setup
+- The backend control server can be any ordinary Web servers accepting HTTP(S) request. In our experiment, we configure a static HTML page as ground truth that only states our experiment purpose and return it all incoming requests.
 
 Code repository:
 - build\_domain\_category.py: 
