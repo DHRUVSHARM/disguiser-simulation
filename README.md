@@ -21,12 +21,13 @@ Vantage Points:
 - SOCKS proxies: We use residential proxies to issue TCP-based DNS queries and HTTP/HTTPS queries through the SOCKS proxies. In our study, we sign-up [ProxyRack](https://www.proxyrack.com/).
 - RIPE Atlas: We use [RIPE Atlas](https://atlas.ripe.net/) to conduct UDP-based DNS tests to complement the results of TCP-based measurement from SOCKS proxies.
 - VPN: We use VPN vantage points to conduct the application traceroute to investigate the deployment of censors. There are two additional requirements for a VPN server to carry out such an experiment: (1) the VPN server and its default gateway should not alter the TTL values of our packets so that the
-intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. 
+intermediate routers can process the packets properly according to the TTL values we set and (2) the VPN server must be physically located in the country as advertised. The pinpoint_censor results shows example results of some countries where we identified VPN servers satisfying above requirements.
 
 Backend Server Setup:
 - The backend control server can be any ordinary Web servers accepting HTTP(S) request. In our experiment, we configure a static HTML page as ground truth that only states our experiment purpose and return it all incoming requests.
 
 Code repository:
+(The files given a description reflect the core functions to run the experiments. Others refer to the specific processing or analysis)
 - build\_domain\_category.py: 
 - build\_domain\_webpage.py: this code help extract the title and landing page of the sensitive domains in testing list and store the output in separte two files. 
 - category_percentage.py:
