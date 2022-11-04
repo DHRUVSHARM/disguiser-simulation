@@ -202,7 +202,6 @@ def process_raw_http_response_from_sni(raw_http_response, is_timeout):
                 response = HTTPResponse(source)
                 response.begin()
                 http_result['text'] = response.read(len(raw_http_response)).decode()
-                #http_result['url'] = raw_http_response.url
                 http_result['status_code'] = response.status
                 http_result['headers'] = dict(response.getheaders())
             except:

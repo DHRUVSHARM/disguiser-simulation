@@ -20,17 +20,6 @@ import errno
 
 
 
-def traceroute(ip_addr):
-	command = 'traceroute -n -q 1 -m 40 -w 1 ' + ip_addr
-	result = os.popen(command).read()
-	route = [item.strip() for item in result.strip().split('\n')]
-	#route = filter(lambda x: netaddr.valid_ipv4(x.split()[1]), route)
-
-	return route
-
-
-
-
 
 # ICMP format in IP packet
 # data[:20] is IP header
@@ -166,7 +155,6 @@ def process_raw_http_response(raw_http_response, is_timeout):
     http_result['timestamp'] = int(time.time())
     http_result['status'] = 'success'
     http_result['status_code'] = 0
-    #http_result['url'] = ''
     http_result['text'] = ''
     http_result['headers'] = dict()
     http_result['is_timeout'] = is_timeout
@@ -185,7 +173,6 @@ def process_raw_http_response(raw_http_response, is_timeout):
             response = HTTPResponse(source)
             response.begin()
             http_result['text'] = response.read(len(raw_http_response)).decode()
-            #http_result['url'] = raw_http_response.url
             http_result['status_code'] = response.status
             http_result['headers'] = dict(response.getheaders())
     else:
@@ -220,7 +207,6 @@ def http_request(domain, server, ttl, timeout = 5):
         # tcp handshake
         sock.connect((server, 80))
         port = sock.getsockname()[1]
-        #print('send port', port)
     
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.send(request)
@@ -333,7 +319,7 @@ timeout = 2
 
 
 lower_ttl = 1
-upper_ttl = 30
+upper_ttl = 60
 if len(sys.argv) > 5:
     lower_ttl = int(sys.argv[4])
     upper_ttl = int(sys.argv[5])

@@ -47,7 +47,9 @@ def release_exit_node(proxy, timeout = 5):
 
 
 def get_proxy_info(proxy, timeout = 5):
-    url = 'http://ip-api.com/json'
+    ## use an online service to determine the geolocation
+    # ip-api.com, ipinfo.io, ......
+    url = '.....'
     curl_cmd = get_curl_cmd(proxy, url)
 
     try:
