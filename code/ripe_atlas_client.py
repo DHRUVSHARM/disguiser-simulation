@@ -16,7 +16,7 @@ import datetime
 import tqdm
 import json
 
-ATLAS_API_KEY = 'f531bef7-f32a-40ef-9b40-3db6a4d66484'
+ATLAS_API_KEY = ''
 
 def retrieve_test_list(country_code):
     country_code = country_code.lower()
