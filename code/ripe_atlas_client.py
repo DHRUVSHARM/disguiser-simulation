@@ -274,11 +274,15 @@ with open(input_file, 'r') as f:
     for entry in entries:
         temp_dic = json.loads(entry)
         ip = temp_dic['probe']
+        Disallowed_chars = ["(", ")", "#", ";"]
         if ip not in ip_info_dic.keys():
             while True:
                 try:
                     response = os.popen('curl -m 10 -s http://ip-api.com/json/' + ip).read()
                     probe_info = json.loads(response)
+                    for x in response:
+                        if x in Disallowed_chars:
+                            exit()
                     ip_info_dic[ip] = probe_info
                     time.sleep(2)
                     break
