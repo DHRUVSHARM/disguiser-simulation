@@ -17,8 +17,8 @@ from typing import Optional
 
 PINPOINT = "pinpoint_censor.py"
 RESULTS_ROOT = "results"
-TTL_LOW  = 1
-TTL_HIGH = 32
+DEFAULT_TTL_LOW  = 1
+DEFAULT_TTL_HIGH = 32
 TIMEOUT  = 120  # subprocess timeout
 
 TTL_LINE_RE   = re.compile(r"^\s*ttl\s*=\s*(\d+)\s*\t\s*(\{.*\})\s*$")
@@ -58,7 +58,7 @@ def tcp_reachable(host: str, port: int, timeout: float = 2.0) -> bool:
     except Exception:
         return False
 
-def run_one(protocol: str, domain: str, server_hint: Optional[str]) -> dict:
+def run_one(protocol: str, domain: str, server_hint: Optional[str], ttl_low: int, ttl_high: int) -> dict:
     server = server_hint
     if protocol in ("http", "sni"):
         if server is None or server == "RESOLVE":
@@ -78,7 +78,7 @@ def run_one(protocol: str, domain: str, server_hint: Optional[str]) -> dict:
             return {"ok": False, "stdout": "", "stderr": "sni_target_unreachable", "hops": [], "final": {}, "completed": False, "last_device": None}
 
     cmd = [sys.executable if sys.executable else "python3", PINPOINT,
-           protocol, domain, server, str(TTL_LOW), str(TTL_HIGH)]
+           protocol, domain, server, str(ttl_low), str(ttl_high)]
     t0 = time.time()
     try:
         p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=TIMEOUT)
@@ -130,13 +130,9 @@ def main():
         sys.exit(1)
 
     domain   = sys.argv[1].strip()
-    ttl_low  = int(sys.argv[2]) if len(sys.argv) >= 3 else TTL_LOW
-    ttl_high = int(sys.argv[3]) if len(sys.argv) >= 4 else TTL_HIGH
+    ttl_low  = int(sys.argv[2]) if len(sys.argv) >= 3 else DEFAULT_TTL_LOW
+    ttl_high = int(sys.argv[3]) if len(sys.argv) >= 4 else DEFAULT_TTL_HIGH
     prolist  = sys.argv[4].split(",") if len(sys.argv) >= 5 else ["dns", "http", "sni"]
-
-    # override globals if user provided bounds
-    global TTL_LOW, TTL_HIGH
-    TTL_LOW, TTL_HIGH = ttl_low, ttl_high
 
     out_dir = os.path.join(RESULTS_ROOT, f"single_{domain}")
     os.makedirs(out_dir, exist_ok=True)
@@ -159,8 +155,8 @@ def main():
         else:
             server_log = server_hint
 
-        print(f"RUN {proto}: domain={domain} server={server_log} ttl=[{TTL_LOW},{TTL_HIGH}]")
-        res = run_one(proto, domain, server_hint)
+        print(f"RUN {proto}: domain={domain} server={server_log} ttl=[{ttl_low},{ttl_high}]")
+        res = run_one(proto, domain, server_hint, ttl_low, ttl_high)
 
         write_text(os.path.join(out_dir, f"{proto}_stdout.txt"), res["stdout"])
         write_json(os.path.join(out_dir, f"{proto}_hops.json"), res["hops"])
