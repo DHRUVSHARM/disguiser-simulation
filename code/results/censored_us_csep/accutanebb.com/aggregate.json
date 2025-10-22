@@ -1,0 +1,33 @@
+{
+  "domain": "accutanebb.com",
+  "ts": 1761160906,
+  "protocols": {
+    "dns": {
+      "server": "8.8.8.8",
+      "ok": true,
+      "completed": false,
+      "last_device": "*",
+      "runtime_s": 38.106,
+      "hops_count": 10,
+      "stderr": ""
+    },
+    "http": {
+      "server": "93.184.216.34",
+      "ok": false,
+      "completed": false,
+      "last_device": null,
+      "runtime_s": 2.431,
+      "hops_count": 0,
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 208, in http_request\n    sock.connect((server, 80))\nTimeoutError: timed out\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 331, in <module>\n    result = http_request(domain, server, ttl, timeout)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 229, in http_request\n    addr = get_router_ip(icmp_sock, port)\n                                    ^^^^\nUnboundLocalError: cannot access local variable 'port' where it is not associated with a value\n"
+    },
+    "sni": {
+      "server": "93.184.216.34",
+      "ok": false,
+      "completed": false,
+      "last_device": null,
+      "runtime_s": 2.429,
+      "hops_count": 0,
+      "stderr": "C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py:263: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\nTraceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 273, in sni_request\n    sock.connect((server, 443))\nTimeoutError: timed out\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 333, in <module>\n    result = sni_request(domain, server, ttl, timeout)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 285, in sni_request\n    addr = get_router_ip(icmp_sock, port)\n                                    ^^^^\nUnboundLocalError: cannot access local variable 'port' where it is not associated with a value\n"
+    }
+  }
+}

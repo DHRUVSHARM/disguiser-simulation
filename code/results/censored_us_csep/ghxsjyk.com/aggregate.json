@@ -1,0 +1,33 @@
+{
+  "domain": "ghxsjyk.com",
+  "ts": 1761160680,
+  "protocols": {
+    "dns": {
+      "server": "8.8.8.8",
+      "ok": false,
+      "completed": false,
+      "last_device": null,
+      "runtime_s": 0.071,
+      "hops_count": 0,
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+    },
+    "http": {
+      "server": "93.184.216.34",
+      "ok": false,
+      "completed": false,
+      "last_device": null,
+      "runtime_s": 0.073,
+      "hops_count": 0,
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+    },
+    "sni": {
+      "server": "93.184.216.34",
+      "ok": false,
+      "completed": false,
+      "last_device": null,
+      "runtime_s": 0.076,
+      "hops_count": 0,
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+    }
+  }
+}

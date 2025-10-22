@@ -125,7 +125,7 @@ def dns_request(domain, server, ttl, timeout = 5):
         
         is_timeout = False
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
 
         # close socket
         # sock.shutdown(socket.SHUT_RDWR)
@@ -135,7 +135,7 @@ def dns_request(domain, server, ttl, timeout = 5):
         raw_dns_response = ''
         is_timeout = True
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
         
     except:
         raw_dns_response = ''
@@ -193,7 +193,7 @@ def recvall(sock):
 
 
 def http_request(domain, server, ttl, timeout = 5):
-
+    port = None
     request = "GET / HTTP/1.1\r\nHost: %s\r\nUser-Agent: Mozilla/5.0\r\n\r\n" % domain
     request = request.encode()
 
@@ -216,7 +216,7 @@ def http_request(domain, server, ttl, timeout = 5):
         raw_http_response = recvall(sock)
         is_timeout = False
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
         
         # close socket
         # sock.shutdown(socket.SHUT_RDWR)
@@ -226,7 +226,8 @@ def http_request(domain, server, ttl, timeout = 5):
         raw_http_response = b''
         is_timeout = True
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        # addr = get_router_ip(icmp_sock, port)
     
     except SocketError as e:
         raw_http_response = b''
@@ -253,7 +254,7 @@ def http_request(domain, server, ttl, timeout = 5):
 
     
 def sni_request(domain, server, ttl, timeout = 5):
-
+    port = None
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
 
@@ -276,13 +277,13 @@ def sni_request(domain, server, ttl, timeout = 5):
 
         wrapped_socket = context.wrap_socket(sock, server_hostname = domain)
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
         
     except socket.timeout:
         sni_result['status'] = 'fail'
         sni_result['is_timeout'] = True
         
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
     
     except:
         sni_result['status'] = 'fail'
