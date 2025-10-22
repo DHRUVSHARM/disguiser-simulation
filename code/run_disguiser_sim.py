@@ -32,7 +32,7 @@ import subprocess
 import re
 import ast
 import socket
-from typing import Optional
+from typing import Optional, Tuple
 
 # ===========================
 #           CONFIG
@@ -48,13 +48,13 @@ UNCENSORED_FILE_NAME = "uncensored_us.txt"
 # Path to the Disguiser traceroute script (same dir as this script)
 PINPOINT_SCRIPT_NAME = "pinpoint_censor.py"
 
-# Protocols and their target servers
-# For http/sni we resolve the domain to an IPv4 address at runtime ("RESOLVE").
-PROTOCOLS = {
-    "dns":  {"server": "8.8.8.8"},   # DNS over TCP target
-    "http": {"server": "RESOLVE"},   # resolve per-domain at runtime
-    "sni":  {"server": "RESOLVE"},   # resolve per-domain at runtime
-}
+# Protocols and their target servers (ordered)
+# For http/sni we will REUSE the DNS A record (Option B). If DNS yields no IP, we mark resolve_failed.
+PROTOCOLS = [
+    ("dns",  {"server": "8.8.8.8"}),  # DNS over TCP target
+    ("http", {"server": "USE_DNS_IP"}),
+    ("sni",  {"server": "USE_DNS_IP"}),
+]
 
 # TTL sweep
 TTL_LOW  = 1
@@ -152,46 +152,43 @@ def tcp_reachable(host: str, port: int, timeout: float = 2.0) -> bool:
     except Exception:
         return False
 
-def run_probe(protocol, domain, configured_server):
+def empty_failed_result(reason: str, server_for_log: str) -> dict:
+    """Create a consistent failed result block without invoking the probe."""
+    now = time.time()
+    return {
+        "ok": False,
+        "t_start": now,
+        "t_end": now,
+        "stdout_lines": [],
+        "stderr": reason,
+        "hops": [],
+        "final": {"error": reason},
+        "completed": False,
+        "last_device": None,
+        "server_for_log": server_for_log,
+    }
+
+def run_probe(protocol: str, domain: str, server: str) -> dict:
     """
     Run pinpoint_censor.py for (protocol, domain, server).
     Return dict with:
       ok, t_start, t_end, stdout_lines, stderr, hops(list), final(dict), completed(bool), last_device(str|None)
     """
-    # Resolve HTTP/SNI server per domain when requested
-    server = configured_server
-    if server == "RESOLVE" and protocol in ("http", "sni"):
-        resolved = resolve_first_a(domain)
-        if not resolved:
-            return {
-                "ok": False, "t_start": time.time(), "t_end": time.time(),
-                "stdout_lines": [], "stderr": "resolve_failed", "hops": [],
-                "final": {}, "completed": False, "last_device": None
-            }
-        server = resolved
-
     # Optional preflight checks to fail fast with clear error
     if protocol == "dns":
-        if not tcp_reachable(server, 53, timeout=2.0):
-            return {
-                "ok": False, "t_start": time.time(), "t_end": time.time(),
-                "stdout_lines": [], "stderr": "dns_target_unreachable", "hops": [],
-                "final": {}, "completed": False, "last_device": None
-            }
+        port = 53
+        err_tag = "dns_target_unreachable"
     elif protocol == "http":
-        if not tcp_reachable(server, 80, timeout=2.0):
-            return {
-                "ok": False, "t_start": time.time(), "t_end": time.time(),
-                "stdout_lines": [], "stderr": "http_target_unreachable", "hops": [],
-                "final": {}, "completed": False, "last_device": None
-            }
+        port = 80
+        err_tag = "http_target_unreachable"
     elif protocol == "sni":
-        if not tcp_reachable(server, 443, timeout=2.0):
-            return {
-                "ok": False, "t_start": time.time(), "t_end": time.time(),
-                "stdout_lines": [], "stderr": "sni_target_unreachable", "hops": [],
-                "final": {}, "completed": False, "last_device": None
-            }
+        port = 443
+        err_tag = "sni_target_unreachable"
+    else:
+        return empty_failed_result("unknown_protocol", server)
+
+    if not tcp_reachable(server, port, timeout=2.0):
+        return empty_failed_result(err_tag, server)
 
     cmd = [
         sys.executable if sys.executable else "python3",
@@ -209,11 +206,9 @@ def run_probe(protocol, domain, configured_server):
             cwd=str(SCRIPT_DIR),  # ensure relative paths resolve consistently
         )
     except subprocess.TimeoutExpired:
-        return {"ok": False, "t_start": t0, "t_end": time.time(),
-                "stdout_lines": [], "stderr": "timeout", "hops": [], "final": {}, "completed": False, "last_device": None}
+        return empty_failed_result("timeout", server)
     except Exception as e:
-        return {"ok": False, "t_start": t0, "t_end": time.time(),
-                "stdout_lines": [], "stderr": str(e), "hops": [], "final": {}, "completed": False, "last_device": None}
+        return empty_failed_result(str(e), server)
 
     t1 = time.time()
     stdout_lines = proc.stdout.splitlines()
@@ -242,6 +237,7 @@ def run_probe(protocol, domain, configured_server):
         "final": final_payload,
         "completed": completed,
         "last_device": last_device,
+        "server_for_log": server,
     }
 
 def write_text(path, text):
@@ -258,6 +254,19 @@ def append_jsonl(path, obj):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(obj) + "\n")
+
+def extract_first_dns_ip_from_hops(hops: list) -> Optional[str]:
+    """
+    Given the list of per-TTL payloads from the DNS probe, find the last payload
+    and read its 'ip_list' if present; return the first IP.
+    """
+    if not hops:
+        return None
+    last = hops[-1]
+    ip_list = last.get("ip_list") or []
+    if isinstance(ip_list, list) and ip_list:
+        return ip_list[0]
+    return None
 
 def process_list(list_path):
     """
@@ -287,36 +296,51 @@ def process_list(list_path):
             "protocols": {},
         }
 
-        for proto, conf in PROTOCOLS.items():
+        dns_ip_cache: Optional[str] = None
+
+        for proto, conf in PROTOCOLS:
             configured_server = conf["server"]
 
-            # For logging, show the resolved server if dynamic
-            if configured_server == "RESOLVE" and proto in ("http", "sni"):
-                server_for_log = resolve_first_a(domain) or "RESOLVE_FAILED"
-            else:
+            # Determine effective server (Option B)
+            if proto == "dns":
                 server_for_log = configured_server
+                res = run_probe(proto, domain, configured_server)
+                # after DNS run, cache first A record if present
+                dns_ip_cache = extract_first_dns_ip_from_hops(res.get("hops", []))
+            else:
+                if configured_server == "USE_DNS_IP":
+                    if dns_ip_cache:
+                        server_for_log = dns_ip_cache
+                        res = run_probe(proto, domain, dns_ip_cache)
+                    else:
+                        # No DNS A record; mark as resolve_failed without running
+                        server_for_log = "RESOLVE_FAILED"
+                        res = empty_failed_result("resolve_failed_no_dns_ip", server_for_log)
+                else:
+                    # fixed server (not used in Option B for http/sni, but kept for completeness)
+                    server_for_log = configured_server
+                    res = run_probe(proto, domain, configured_server)
 
             log.info(f"[{basename}] RUN  proto={proto} domain={domain} server={server_for_log}")
 
-            res = run_probe(proto, domain, configured_server)
-
-            # Save raw stdout and hops JSON
+            # Save raw stdout and hops/final JSON
             stdout_file = os.path.join(dom_dir, f"{proto}_stdout.txt")
             hops_file   = os.path.join(dom_dir, f"{proto}_hops.json")
             final_file  = os.path.join(dom_dir, f"{proto}_final.json")
 
-            write_text(stdout_file, "\n".join(res["stdout_lines"]))
-            write_json(hops_file, res["hops"])
-            write_json(final_file, res["final"] if isinstance(res["final"], dict) else {"note": "no_final"})
+            write_text(stdout_file, "\n".join(res.get("stdout_lines", [])))
+            write_json(hops_file, res.get("hops", []))
+            final_payload = res.get("final", {})
+            write_json(final_file, final_payload if isinstance(final_payload, dict) else {"note": "no_final"})
 
             # Per-protocol record for domain aggregate
             per_domain_agg["protocols"][proto] = {
                 "server": server_for_log,
-                "ok": res["ok"],
-                "completed": res["completed"],
-                "last_device": res["last_device"],
-                "runtime_s": round(res["t_end"] - res["t_start"], 3),
-                "hops_count": len(res["hops"]),
+                "ok": res.get("ok", False),
+                "completed": res.get("completed", False),
+                "last_device": res.get("last_device"),
+                "runtime_s": round(res.get("t_end", time.time()) - res.get("t_start", time.time()), 3),
+                "hops_count": len(res.get("hops", [])),
                 "stderr": res.get("stderr", ""),
             }
 
@@ -327,11 +351,11 @@ def process_list(list_path):
                 "domain": domain,
                 "protocol": proto,
                 "server": server_for_log,
-                "ok": res["ok"],
-                "completed": res["completed"],
-                "last_device": res["last_device"],
-                "runtime_s": round(res["t_end"] - res["t_start"], 3),
-                "hops_count": len(res["hops"]),
+                "ok": res.get("ok", False),
+                "completed": res.get("completed", False),
+                "last_device": res.get("last_device"),
+                "runtime_s": round(res.get("t_end", time.time()) - res.get("t_start", time.time()), 3),
+                "hops_count": len(res.get("hops", [])),
             }
             append_jsonl(summary_path, summary_record)
 
