@@ -10,10 +10,13 @@
 #       <domain_sanitized>/
 #           dns_stdout.txt
 #           dns_hops.json
+#           dns_final.json
 #           http_stdout.txt
 #           http_hops.json
+#           http_final.json
 #           sni_stdout.txt
 #           sni_hops.json
+#           sni_final.json
 #           aggregate.json              # per-domain summary across protocols
 #
 # Logging:
@@ -23,12 +26,12 @@ import os
 import sys
 import time
 import json
-import shlex
 import logging
 import pathlib
 import subprocess
 import re
 import ast
+import socket
 from datetime import datetime
 
 # ===========================
@@ -45,22 +48,23 @@ UNCENSORED_FILE_NAME = "uncensored_us.txt"
 # Path to the Disguiser traceroute script (same dir as this script)
 PINPOINT_SCRIPT_NAME = "pinpoint_censor.py"
 
-# Protocols and their target servers (sensible defaults for local simulation)
+# Protocols and their target servers
+# For http/sni we resolve the domain to an IPv4 address at runtime ("RESOLVE").
 PROTOCOLS = {
-    "dns":  {"server": "8.8.8.8"},         # DNS over TCP target
-    "http": {"server": "93.184.216.34"},   # example.com
-    "sni":  {"server": "93.184.216.34"},   # example.com (TLS/SNI)
+    "dns":  {"server": "8.8.8.8"},   # DNS over TCP target
+    "http": {"server": "RESOLVE"},   # resolve per-domain at runtime
+    "sni":  {"server": "RESOLVE"},   # resolve per-domain at runtime
 }
 
 # TTL sweep
 TTL_LOW  = 1
-TTL_HIGH = 30
+TTL_HIGH = 32
 
 # Per-domain pacing (seconds)
 SLEEP_BETWEEN_RUNS = 0.15
 
 # Timeout per subprocess (seconds)
-SUBPROCESS_TIMEOUT = 60
+SUBPROCESS_TIMEOUT = 120
 
 # Top-level output dirs
 RESULTS_ROOT = "results"
@@ -111,7 +115,7 @@ def load_domains(path):
     return out
 
 def parse_ttl_line(line):
-    """Parse a 'ttl = N \t {dict}' line into (ttl:int, payload:dict)."""
+    """Parse a 'ttl = N \\t {dict}' line into (ttl:int, payload:dict)."""
     m = TTL_LINE_RE.match(line)
     if not m:
         return None, None
@@ -124,12 +128,65 @@ def parse_ttl_line(line):
     except Exception:
         return ttl, None
 
+def resolve_first_a(domain: str) -> str | None:
+    """Return first IPv4 address for domain, or None."""
+    try:
+        infos = socket.getaddrinfo(domain, None, family=socket.AF_INET, type=socket.SOCK_STREAM)
+        for fam, _stype, _proto, _canon, sockaddr in infos:
+            if fam == socket.AF_INET:
+                return sockaddr[0]
+    except Exception:
+        return None
+    return None
+
+def tcp_reachable(host: str, port: int, timeout: float = 2.0) -> bool:
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except Exception:
+        return False
+
 def run_probe(protocol, domain, server):
     """
     Run pinpoint_censor.py for (protocol, domain, server).
     Return dict with:
       ok, t_start, t_end, stdout_lines, stderr, hops(list), final(dict), completed(bool), last_device(str|None)
     """
+
+    # Resolve HTTP/SNI server per domain when requested
+    if server == "RESOLVE" and protocol in ("http", "sni"):
+        resolved = resolve_first_a(domain)
+        if not resolved:
+            return {
+                "ok": False, "t_start": time.time(), "t_end": time.time(),
+                "stdout_lines": [], "stderr": "resolve_failed", "hops": [],
+                "final": {}, "completed": False, "last_device": None
+            }
+        server = resolved
+
+    # Optional preflight checks to fail fast with clear error
+    if protocol == "dns":
+        if not tcp_reachable(server, 53, timeout=2.0):
+            return {
+                "ok": False, "t_start": time.time(), "t_end": time.time(),
+                "stdout_lines": [], "stderr": "dns_target_unreachable", "hops": [],
+                "final": {}, "completed": False, "last_device": None
+            }
+    elif protocol == "http":
+        if not tcp_reachable(server, 80, timeout=2.0):
+            return {
+                "ok": False, "t_start": time.time(), "t_end": time.time(),
+                "stdout_lines": [], "stderr": "http_target_unreachable", "hops": [],
+                "final": {}, "completed": False, "last_device": None
+            }
+    elif protocol == "sni":
+        if not tcp_reachable(server, 443, timeout=2.0):
+            return {
+                "ok": False, "t_start": time.time(), "t_end": time.time(),
+                "stdout_lines": [], "stderr": "sni_target_unreachable", "hops": [],
+                "final": {}, "completed": False, "last_device": None
+            }
+
     cmd = [
         sys.executable if sys.executable else "python3",
         PINPOINT_SCRIPT,
@@ -143,7 +200,7 @@ def run_probe(protocol, domain, server):
             stderr=subprocess.PIPE,
             text=True,
             timeout=SUBPROCESS_TIMEOUT,
-            cwd=str(SCRIPT_DIR),  # ensure relative paths (if any) resolve consistently
+            cwd=str(SCRIPT_DIR),  # ensure relative paths resolve consistently
         )
     except subprocess.TimeoutExpired:
         return {"ok": False, "t_start": t0, "t_end": time.time(),
@@ -225,27 +282,36 @@ def process_list(list_path):
         }
 
         for proto, conf in PROTOCOLS.items():
-            server = conf["server"]
-            log.info(f"[{basename}] RUN  proto={proto} domain={domain} server={server}")
+            configured_server = conf["server"]
 
-            res = run_probe(proto, domain, server)
+            # if server is dynamic, resolve now for logging and per-record storage
+            if configured_server == "RESOLVE" and proto in ("http", "sni"):
+                server_for_log = resolve_first_a(domain) or "RESOLVE_FAILED"
+            else:
+                server_for_log = configured_server
+
+            log.info(f"[{basename}] RUN  proto={proto} domain={domain} server={server_for_log}")
+
+            res = run_probe(proto, domain, configured_server)
 
             # Save raw stdout and hops JSON
             stdout_file = os.path.join(dom_dir, f"{proto}_stdout.txt")
             hops_file   = os.path.join(dom_dir, f"{proto}_hops.json")
+            final_file  = os.path.join(dom_dir, f"{proto}_final.json")
+
             write_text(stdout_file, "\n".join(res["stdout_lines"]))
             write_json(hops_file, res["hops"])
+            write_json(final_file, res["final"] if isinstance(res["final"], dict) else {"note": "no_final"})
 
             # Per-protocol record for domain aggregate
             per_domain_agg["protocols"][proto] = {
-                "server": server,
+                "server": server_for_log,
                 "ok": res["ok"],
                 "completed": res["completed"],
                 "last_device": res["last_device"],
                 "runtime_s": round(res["t_end"] - res["t_start"], 3),
                 "hops_count": len(res["hops"]),
                 "stderr": res.get("stderr", ""),
-                # You can add more fields here if needed
             }
 
             # Single line to global summary.jsonl
@@ -254,7 +320,7 @@ def process_list(list_path):
                 "list_file": basename,
                 "domain": domain,
                 "protocol": proto,
-                "server": server,
+                "server": server_for_log,
                 "ok": res["ok"],
                 "completed": res["completed"],
                 "last_device": res["last_device"],
