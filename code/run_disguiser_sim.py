@@ -32,7 +32,7 @@ import subprocess
 import re
 import ast
 import socket
-from datetime import datetime
+from typing import Optional
 
 # ===========================
 #           CONFIG
@@ -96,7 +96,12 @@ log.addHandler(_ch)
 
 # Example printed line from pinpoint_censor.py:
 #   ttl = 7     {'timestamp': 169..., 'status': 'success', 'is_timeout': False, 'device': '1.2.3.4', ...}
-TTL_LINE_RE = re.compile(r"^\s*ttl\s*=\s*(\d+)\s*\t\s*(\{.*\})\s*$")
+TTL_LINE_RE   = re.compile(r"^\s*ttl\s*=\s*(\d+)\s*\t\s*(\{.*\})\s*$")
+RCODE_ENUM_RE = re.compile(r"<Rcode\.[A-Z_]+:\s*(\d+)>")
+
+def sanitize_payload_str(s: str) -> str:
+    # Convert Dnspython enum reprs like "<Rcode.NOERROR: 0>" -> "0"
+    return RCODE_ENUM_RE.sub(r"\1", s)
 
 def slugify(name: str) -> str:
     s = re.sub(r"[^A-Za-z0-9._-]+", "_", name.strip())
@@ -120,15 +125,16 @@ def parse_ttl_line(line):
     if not m:
         return None, None
     ttl = int(m.group(1))
+    raw = sanitize_payload_str(m.group(2))
     try:
-        payload = ast.literal_eval(m.group(2))
+        payload = ast.literal_eval(raw)
         if not isinstance(payload, dict):
             return ttl, None
         return ttl, payload
     except Exception:
         return ttl, None
 
-def resolve_first_a(domain: str) -> str | None:
+def resolve_first_a(domain: str) -> Optional[str]:
     """Return first IPv4 address for domain, or None."""
     try:
         infos = socket.getaddrinfo(domain, None, family=socket.AF_INET, type=socket.SOCK_STREAM)
@@ -146,14 +152,14 @@ def tcp_reachable(host: str, port: int, timeout: float = 2.0) -> bool:
     except Exception:
         return False
 
-def run_probe(protocol, domain, server):
+def run_probe(protocol, domain, configured_server):
     """
     Run pinpoint_censor.py for (protocol, domain, server).
     Return dict with:
       ok, t_start, t_end, stdout_lines, stderr, hops(list), final(dict), completed(bool), last_device(str|None)
     """
-
     # Resolve HTTP/SNI server per domain when requested
+    server = configured_server
     if server == "RESOLVE" and protocol in ("http", "sni"):
         resolved = resolve_first_a(domain)
         if not resolved:
@@ -284,7 +290,7 @@ def process_list(list_path):
         for proto, conf in PROTOCOLS.items():
             configured_server = conf["server"]
 
-            # if server is dynamic, resolve now for logging and per-record storage
+            # For logging, show the resolved server if dynamic
             if configured_server == "RESOLVE" and proto in ("http", "sni"):
                 server_for_log = resolve_first_a(domain) or "RESOLVE_FAILED"
             else:
