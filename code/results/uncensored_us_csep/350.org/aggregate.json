@@ -1,33 +1,33 @@
 {
   "domain": "350.org",
-  "ts": 1761160691,
+  "ts": 1761167115,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
-      "ok": false,
+      "ok": true,
       "completed": false,
       "last_device": null,
-      "runtime_s": 0.071,
+      "runtime_s": 1.552,
       "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "stderr": ""
     },
     "http": {
       "server": "93.184.216.34",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 0.083,
+      "runtime_s": 60.066,
       "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "stderr": "timeout"
     },
     "sni": {
       "server": "93.184.216.34",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 0.07,
+      "runtime_s": 60.049,
       "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "stderr": "timeout"
     }
   }
 }
