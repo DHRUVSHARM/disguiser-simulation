@@ -41,17 +41,15 @@ def get_port_from_icmp_packet(data, server):
     return port
 
 
-def get_router_ip(icmp_sock, port):
+def get_router_ip(icmp_sock, port, server):
     try:
         while True:
             data, addr = icmp_sock.recvfrom(1508)
             icmp_port = get_port_from_icmp_packet(data, server)
             if port == icmp_port:
-                addr = addr[0]
-                break
+                return addr[0]
     except:
-        addr = '*'
-    return addr
+        return '*'
 
 ############################################# DNS Part ##########################################
 def extract_ip_address(dns_response):
@@ -98,30 +96,33 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
     return dns_result
 
 
-def dns_request(domain, server, ttl, timeout = 5):
+def dns_request(domain, server, ttl, timeout=5):
     qname = dns.name.from_text(domain)
     q = dns.message.make_query(qname, dns.rdatatype.A).to_wire()
-    q = struct.pack('!H', len(q)) + q  # prepend 2 bytes packet length
+    q = struct.pack('!H', len(q)) + q
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
 
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
-    icmp_sock.settimeout(1)
+    icmp_sock.settimeout(2)
 
     port = None
     try:
+        # TTL must be set BEFORE connect so the SYN carries this TTL
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 53))
         port = sock.getsockname()[1]
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
+
         sock.send(q)
-        raw_dns_response = sock.recv(1024)
+        raw_dns_response = sock.recv(2048)
         is_timeout = False
-        addr = get_router_ip(icmp_sock, port)
+
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_dns_response = b''
         is_timeout = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        addr = get_router_ip(icmp_sock, port, server) if port is not None else '*'
     except Exception:
         raw_dns_response = b''
         is_timeout = False
@@ -181,29 +182,32 @@ def recvall(sock):
     return data
 
 
-def http_request(domain, server, ttl, timeout = 5):
+def http_request(domain, server, ttl, timeout=5):
     request = f"GET / HTTP/1.1\r\nHost: {domain}\r\nUser-Agent: Mozilla/5.0\r\n\r\n".encode()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
 
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
-    icmp_sock.settimeout(1)
+    icmp_sock.settimeout(2)
 
     port = None
     try:
+        # TTL before connect
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 80))
         port = sock.getsockname()[1]
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
+
         sock.send(request)
-        time.sleep(1)
+        time.sleep(0.2)
         raw_http_response = recvall(sock)
         is_timeout = False
-        addr = get_router_ip(icmp_sock, port)
+
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_http_response = b''
         is_timeout = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        addr = get_router_ip(icmp_sock, port, server) if port is not None else '*'
     except SocketError:
         raw_http_response = b''
         is_timeout = False
@@ -226,17 +230,16 @@ def http_request(domain, server, ttl, timeout = 5):
 
 
 
-
 ############################################# SNI Part ##########################################
 
-    
-def sni_request(domain, server, ttl, timeout = 5):
+def sni_request(domain, server, ttl, timeout=5):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
 
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
-    icmp_sock.settimeout(1)
+    icmp_sock.settimeout(2)
 
+    # If you can, prefer PROTOCOL_TLS_CLIENT and set verify options; keeping original for parity:
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
     sni_result = {
@@ -250,15 +253,17 @@ def sni_request(domain, server, ttl, timeout = 5):
     wrapped_socket = None
     port = None
     try:
+        # TTL before connect
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 443))
         port = sock.getsockname()[1]
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
+
         wrapped_socket = context.wrap_socket(sock, server_hostname=domain)
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         sni_result['status'] = 'fail'
         sni_result['is_timeout'] = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        addr = get_router_ip(icmp_sock, port, server) if port is not None else '*'
     except Exception:
         sni_result['status'] = 'fail'
         addr = '!'
