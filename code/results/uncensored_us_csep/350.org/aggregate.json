@@ -1,33 +1,33 @@
 {
   "domain": "350.org",
-  "ts": 1761167115,
+  "ts": 1761177813,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.552,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.214,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.066,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "104.26.8.173",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.186,
+      "hops_count": 1,
+      "stderr": ""
     },
     "sni": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.049,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "104.26.8.173",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.208,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
     }
   }
 }

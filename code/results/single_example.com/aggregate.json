@@ -1,0 +1,15 @@
+{
+  "domain": "example.com",
+  "ts": 1761175355,
+  "protocols": {
+    "dns": {
+      "server": "8.8.8.8",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.203,
+      "hops_count": 1,
+      "stderr": ""
+    }
+  }
+}

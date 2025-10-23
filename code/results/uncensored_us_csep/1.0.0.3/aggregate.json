@@ -1,33 +1,34 @@
 {
   "domain": "1.0.0.3",
-  "ts": 1761166383,
+  "ts": 1761177783,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.592,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.233,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.041,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "1.0.0.3",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.182,
+      "hops_count": 1,
+      "stderr": ""
     },
     "sni": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.046,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "1.0.0.3",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.209,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
     }
-  }
+  },
+  "note": "http/sni used local resolver fallback"
 }

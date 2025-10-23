@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "ttl": 1,
+    "timestamp": 1761177815,
+    "status": "success",
+    "rcode": 0,
+    "ip_list": [
+      "104.26.8.173",
+      "172.67.68.133",
+      "104.26.9.173"
+    ],
+    "is_timeout": false,
+    "device": "*"
+  }
+]

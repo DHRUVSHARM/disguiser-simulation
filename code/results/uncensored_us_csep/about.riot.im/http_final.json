@@ -1,0 +1,19 @@
+{
+  "timestamp": 1761177902,
+  "status": "success",
+  "status_code": 301,
+  "text": "",
+  "headers": {
+    "Date": "Thu, 23 Oct 2025 00:05:03 GMT",
+    "Content-Length": "0",
+    "Connection": "keep-alive",
+    "location": "https://about.riot.im/",
+    "cf-cache-status": "DYNAMIC",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=ncT7I8O5Ynqg00R8ebDg8kmck0WMmQ9tixenIKhmI9ut1onYp6Nn7xglkuhEockExl79tZRFIjpL6J%2B8gsxjuTp24YUQEITDKpuDbQ%3D%3D\"}]}",
+    "Server": "cloudflare",
+    "CF-RAY": "992cfb04dda74268-EWR"
+  },
+  "is_timeout": false,
+  "device": "*"
+}

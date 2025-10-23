@@ -1,33 +1,33 @@
 {
   "domain": "abc.go.com",
-  "ts": 1761168336,
+  "ts": 1761177865,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.475,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.272,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.06,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "44.208.7.34",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.187,
+      "hops_count": 1,
+      "stderr": ""
     },
     "sni": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.047,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "44.208.7.34",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.241,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
     }
   }
 }

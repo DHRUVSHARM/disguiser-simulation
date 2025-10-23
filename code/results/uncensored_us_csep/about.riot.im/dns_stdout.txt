@@ -1,0 +1,1 @@
+ttl = 1 	 {'timestamp': 1761177899, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['104.26.5.138', '104.26.4.138', '172.67.70.226'], 'is_timeout': False, 'device': '*'}

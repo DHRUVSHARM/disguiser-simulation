@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "ttl": 1,
+    "timestamp": 1761177869,
+    "status": "success",
+    "status_code": 301,
+    "text": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>301 Moved Permanently</title>\n</head><body>\n<h1>Moved Permanently</h1>\n<p>The document has moved <a href=\"https://abc.com/\">here</a>.</p>\n</body></html>\n",
+    "headers": {
+      "Date": "Thu, 23 Oct 2025 00:04:29 GMT",
+      "Content-Type": "text/html; charset=iso-8859-1",
+      "Content-Length": "224",
+      "Connection": "keep-alive",
+      "server": "Apache/2.4.6 (CentOS) PHP/5.4.16",
+      "location": "https://abc.com/",
+      "via": "1.1 b5a68da6f66c (Varnish/7.5)",
+      "vary": "Accept-Encoding",
+      "cache-control": "max-age=0, must-revalidate",
+      "set-cookie": "country=us; path=/;"
+    },
+    "is_timeout": false,
+    "device": "*"
+  }
+]

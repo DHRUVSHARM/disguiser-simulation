@@ -1,1 +1,1 @@
-ttl = 1 	 {'timestamp': 1761166994, 'status': 'success', 'rcode': <Rcode.NXDOMAIN: 3>, 'ip_list': [], 'is_timeout': False, 'device': '*'}
+ttl = 1 	 {'timestamp': 1761177810, 'status': 'success', 'rcode': <Rcode.NXDOMAIN: 3>, 'ip_list': [], 'is_timeout': False, 'device': '*'}

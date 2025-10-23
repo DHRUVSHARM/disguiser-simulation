@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "ttl": 1,
+    "timestamp": 1761177846,
+    "status": "success",
+    "rcode": 3,
+    "ip_list": [],
+    "is_timeout": false,
+    "device": "*"
+  }
+]

@@ -1,33 +1,33 @@
 {
   "domain": "delitky.com",
-  "ts": 1761164056,
+  "ts": 1761177745,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.464,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.234,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
+      "server": "RESOLVE_FAILED",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 60.029,
+      "runtime_s": 0.0,
       "hops_count": 0,
-      "stderr": "timeout"
+      "stderr": "resolve_failed_no_dns_ip"
     },
     "sni": {
-      "server": "93.184.216.34",
+      "server": "RESOLVE_FAILED",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 60.021,
+      "runtime_s": 0.0,
       "hops_count": 0,
-      "stderr": "timeout"
+      "stderr": "resolve_failed_no_dns_ip"
     }
   }
 }

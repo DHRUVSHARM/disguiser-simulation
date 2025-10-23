@@ -1,33 +1,33 @@
 {
   "domain": "about.riot.im",
-  "ts": 1761160702,
+  "ts": 1761177898,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 0.072,
-      "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.563,
+      "hops_count": 1,
+      "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 0.077,
-      "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "server": "104.26.5.138",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.486,
+      "hops_count": 1,
+      "stderr": ""
     },
     "sni": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 0.071,
-      "hops_count": 0,
-      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\dhruv\\Downloads\\disguiser_code\\Disguiser\\code\\pinpoint_censor.py\", line 2, in <module>\n    import dns.query\nModuleNotFoundError: No module named 'dns'\n"
+      "server": "104.26.5.138",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.542,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
     }
   }
 }

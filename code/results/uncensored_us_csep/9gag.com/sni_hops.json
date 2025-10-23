@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "ttl": 1,
+    "timestamp": 1761177859,
+    "cert_serial": "145670499352722666544803068037039953096",
+    "status": "success",
+    "is_timeout": false,
+    "device": "*"
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "ttl": 1,
+    "timestamp": 1761175398,
+    "status": "success",
+    "status_code": 302,
+    "text": "",
+    "headers": {
+      "Connection": "keep-alive",
+      "Content-Length": "0",
+      "cache-control": "public, stale-while-revalidate=10, max-age=60",
+      "location": "https://www.bbc.com/",
+      "req-svc-chain": "FASTLY,GTM,BELFRAGE",
+      "via": "1.1 BBC-GTM, 1.1 Belfrage, 1.1 varnish",
+      "x-bbc-no-scheme-rewrite": "1",
+      "Origin-Agent-Cluster": "?0",
+      "nel": "{\"report_to\":\"default\",\"max_age\":2592000,\"include_subdomains\":true,\"failure_fraction\":0.25}",
+      "X-BBC-Edge-Cache-Status": "HIT",
+      "report-to": "{\"group\":\"default\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://default.bbc-reporting-api.app/report-endpoint\",\"priority\":1}],\"include_subdomains\":true}",
+      "Server": "BBC-GTM",
+      "Strict-Transport-Security": "max-age=31536000; preload",
+      "X-Robots-Tag": "bingbot: noarchive",
+      "Fastly-Restarts": "1",
+      "Accept-Ranges": "bytes",
+      "Date": "Wed, 22 Oct 2025 23:23:18 GMT",
+      "X-Fastly-Cache-Status": "HIT-CLUSTER",
+      "X-Served-By": "cache-lga21945-LGA",
+      "X-Cache": "HIT",
+      "X-Cache-Hits": "1",
+      "X-Timer": "S1761175398.351865,VS0,VE6",
+      "X-Fastly-Pre-Flight-Cache": "MISS, HIT",
+      "X-Fastly-Pre-Flight-Cache-Status": "HIT-CLUSTER",
+      "X-cache-age": "28",
+      "Vary": "x-bbc-edge-scheme",
+      "alt-svc": "h3=\":443\";ma=86400,h3-29=\":443\";ma=86400,h3-27=\":443\";ma=86400"
+    },
+    "is_timeout": false,
+    "device": "*"
+  }
+]

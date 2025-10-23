@@ -1,33 +1,33 @@
 {
   "domain": "fastloginway.com",
-  "ts": 1761164422,
+  "ts": 1761177751,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.643,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.219,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
+      "server": "RESOLVE_FAILED",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 60.03,
+      "runtime_s": 0.0,
       "hops_count": 0,
-      "stderr": "timeout"
+      "stderr": "resolve_failed_no_dns_ip"
     },
     "sni": {
-      "server": "93.184.216.34",
+      "server": "RESOLVE_FAILED",
       "ok": false,
       "completed": false,
       "last_device": null,
-      "runtime_s": 60.074,
+      "runtime_s": 0.0,
       "hops_count": 0,
-      "stderr": "timeout"
+      "stderr": "resolve_failed_no_dns_ip"
     }
   }
 }

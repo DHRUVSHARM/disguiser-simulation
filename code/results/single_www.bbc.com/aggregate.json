@@ -1,0 +1,33 @@
+{
+  "domain": "www.bbc.com",
+  "ts": 1761175395,
+  "protocols": {
+    "dns": {
+      "server": "8.8.8.8",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.218,
+      "hops_count": 1,
+      "stderr": ""
+    },
+    "http": {
+      "server": "199.232.36.81",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.192,
+      "hops_count": 1,
+      "stderr": ""
+    },
+    "sni": {
+      "server": "199.232.36.81",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.209,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
+    }
+  }
+}

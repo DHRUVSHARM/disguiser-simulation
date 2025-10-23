@@ -1,0 +1,23 @@
+{
+  "timestamp": 1761177802,
+  "status": "success",
+  "status_code": 301,
+  "text": "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body>\r\n<center><h1>301 Moved Permanently</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n",
+  "headers": {
+    "Date": "Thu, 23 Oct 2025 00:03:22 GMT",
+    "Content-Type": "text/html",
+    "Content-Length": "167",
+    "Connection": "keep-alive",
+    "Cache-Control": "max-age=3600",
+    "Expires": "Thu, 23 Oct 2025 01:03:22 GMT",
+    "Location": "https://1337x.st/",
+    "Report-To": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=MAeiPKUVXoSdmkbAo7K86i9FrgAcWppEYFsvcRBXtyV%2BcfKJnCnnk%2BpdWr%2FTl3BRRe0FlIhtDk9w12f%2BJpGagzu%2Fv5ITlOtF4ae7O5xLHQfZY36iRpmS67K9UA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+    "NEL": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+    "Server": "cloudflare",
+    "CF-RAY": "992cf891d985726e-EWR",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "server-timing": "cfL4;desc=\"?proto=TCP&rtt=10415&min_rtt=10415&rtt_var=5207&sent=1&recv=3&lost=0&retrans=0&sent_bytes=0&recv_bytes=59&delivery_rate=0&cwnd=35&unsent_bytes=0&cid=0000000000000000&ts=0&x=0\""
+  },
+  "is_timeout": false,
+  "device": "*"
+}

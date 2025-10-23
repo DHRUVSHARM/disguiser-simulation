@@ -1,33 +1,33 @@
 {
   "domain": "76crimes.com",
-  "ts": 1761167359,
+  "ts": 1761177824,
   "protocols": {
     "dns": {
       "server": "8.8.8.8",
       "ok": true,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 1.537,
-      "hops_count": 0,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.206,
+      "hops_count": 1,
       "stderr": ""
     },
     "http": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.01,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "162.0.212.2",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 2.179,
+      "hops_count": 1,
+      "stderr": ""
     },
     "sni": {
-      "server": "93.184.216.34",
-      "ok": false,
-      "completed": false,
-      "last_device": null,
-      "runtime_s": 60.068,
-      "hops_count": 0,
-      "stderr": "timeout"
+      "server": "162.0.212.2",
+      "ok": true,
+      "completed": true,
+      "last_device": "*",
+      "runtime_s": 1.219,
+      "hops_count": 1,
+      "stderr": "/home/ds7042/disguiser-simulation/code/pinpoint_censor.py:264: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated\n  context = ssl.SSLContext(ssl.PROTOCOL_TLS)\n"
     }
   }
 }

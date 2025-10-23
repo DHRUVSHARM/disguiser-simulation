@@ -1,0 +1,20 @@
+{
+  "timestamp": 1761177807,
+  "status": "success",
+  "status_code": 301,
+  "text": "",
+  "headers": {
+    "Date": "Thu, 23 Oct 2025 00:03:27 GMT",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "Location": "https://1337x.to/",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=51tfe8NHRTA0PkUg8xk8XeuLP2nwHKnyvIBx%2F4fWE9TWhNXWGtM377gOo7uu07a%2FGnjNJpLIYN%2FEY3cG%2BJsk9KCU3KGto9Hy\"}]}",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Server-Timing": "cfEdge;dur=3,cfOrigin;dur=0",
+    "Server": "cloudflare",
+    "CF-RAY": "992cf8b1cc384a2b-EWR",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "is_timeout": false,
+  "device": "*"
+}
