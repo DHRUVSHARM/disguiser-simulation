@@ -98,52 +98,41 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
     return dns_result
 
 
-
 def dns_request(domain, server, ttl, timeout = 5):
-    
     qname = dns.name.from_text(domain)
     q = dns.message.make_query(qname, dns.rdatatype.A).to_wire()
-    q = struct.pack('!H', len(q)) + q # prepend 2 bytes packet length
-
+    q = struct.pack('!H', len(q)) + q  # prepend 2 bytes packet length
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
-    
+
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(1)
 
+    port = None
     try:
-        # tcp handshake
         sock.connect((server, 53))
         port = sock.getsockname()[1]
-        
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
-        # send DNS-over-TCP query, receive response
         sock.send(q)
         raw_dns_response = sock.recv(1024)
-
-        
         is_timeout = False
-
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
-
-        # close socket
-        # sock.shutdown(socket.SHUT_RDWR)
-        # sock.close()
-    
+        addr = get_router_ip(icmp_sock, port)
     except socket.timeout:
-        raw_dns_response = ''
+        raw_dns_response = b''
         is_timeout = True
-
-        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
-        
-    except:
-        raw_dns_response = ''
+        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+    except Exception:
+        raw_dns_response = b''
         is_timeout = False
         addr = '!'
+    finally:
+        try: sock.close()
+        except: pass
+        try: icmp_sock.close()
+        except: pass
 
     dns_result = process_raw_dns_response(raw_dns_response, is_timeout)
-
     dns_result['device'] = addr
     return dns_result
 
@@ -193,9 +182,7 @@ def recvall(sock):
 
 
 def http_request(domain, server, ttl, timeout = 5):
-    port = None
-    request = "GET / HTTP/1.1\r\nHost: %s\r\nUser-Agent: Mozilla/5.0\r\n\r\n" % domain
-    request = request.encode()
+    request = f"GET / HTTP/1.1\r\nHost: {domain}\r\nUser-Agent: Mozilla/5.0\r\n\r\n".encode()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
@@ -203,44 +190,34 @@ def http_request(domain, server, ttl, timeout = 5):
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(1)
 
+    port = None
     try:
-        # tcp handshake
         sock.connect((server, 80))
         port = sock.getsockname()[1]
-    
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.send(request)
         time.sleep(1)
-        
-
         raw_http_response = recvall(sock)
         is_timeout = False
-
-        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
-        
-        # close socket
-        # sock.shutdown(socket.SHUT_RDWR)
-        # sock.close()
-
+        addr = get_router_ip(icmp_sock, port)
     except socket.timeout:
         raw_http_response = b''
         is_timeout = True
-
         addr = get_router_ip(icmp_sock, port) if port is not None else '*'
-        # addr = get_router_ip(icmp_sock, port)
-    
-    except SocketError as e:
+    except SocketError:
         raw_http_response = b''
         is_timeout = False
         addr = '!'
-
-    except Exception as e:
-        print(e)
+    except Exception:
         raw_http_response = b''
         is_timeout = False
         addr = '!'
+    finally:
+        try: sock.close()
+        except: pass
+        try: icmp_sock.close()
+        except: pass
 
-    
     http_result = process_raw_http_response(raw_http_response, is_timeout)
     http_result['device'] = addr
     return http_result
@@ -254,7 +231,6 @@ def http_request(domain, server, ttl, timeout = 5):
 
     
 def sni_request(domain, server, ttl, timeout = 5):
-    port = None
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
 
@@ -263,48 +239,46 @@ def sni_request(domain, server, ttl, timeout = 5):
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
-    sni_result = dict()
-    sni_result['timestamp'] = int(time.time())
-    sni_result['cert'] = ''
-    sni_result['cert_serial'] = '0'
-    sni_result['status'] = 'success'
-    sni_result['is_timeout'] = False
-    
+    sni_result = {
+        'timestamp': int(time.time()),
+        'cert': '',
+        'cert_serial': '0',
+        'status': 'success',
+        'is_timeout': False
+    }
+
+    wrapped_socket = None
+    port = None
     try:
         sock.connect((server, 443))
         port = sock.getsockname()[1]
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
-
-        wrapped_socket = context.wrap_socket(sock, server_hostname = domain)
-
-        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
-        
+        wrapped_socket = context.wrap_socket(sock, server_hostname=domain)
+        addr = get_router_ip(icmp_sock, port)
     except socket.timeout:
         sni_result['status'] = 'fail'
         sni_result['is_timeout'] = True
-        
-        addr = get_router_ip(icmp_sock, port)  if port is not None else '*'
-    
-    except:
+        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+    except Exception:
         sni_result['status'] = 'fail'
         addr = '!'
-    
     else:
         try:
             sni_result['cert'] = ssl.DER_cert_to_PEM_cert(wrapped_socket.getpeercert(True))
             x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, sni_result['cert'])
             sni_result['cert_serial'] = str(x509.get_serial_number())
-
-        except Exception as e:
-            print('proxy_sni_error:', e)
+        except Exception:
             pass
-
-
-    try:
-        wrapped_socket.shutdown(socket.SHUT_RDWR)
-        wrapped_socket.close()
-    except:
-        pass
+    finally:
+        try:
+            if wrapped_socket:
+                wrapped_socket.shutdown(socket.SHUT_RDWR)
+                wrapped_socket.close()
+        except: pass
+        try: sock.close()
+        except: pass
+        try: icmp_sock.close()
+        except: pass
 
     sni_result['device'] = addr
     return sni_result
