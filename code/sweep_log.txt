@@ -1,0 +1,81 @@
+=== DNS TTL Sweep: facebook.com via 8.8.8.8 ===
+
+---- TTL = 1 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 1 	 {'timestamp': 1761967814, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '129.21.115.252'}
+
+---- TTL = 2 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 2 	 {'timestamp': 1761967816, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '129.21.8.126'}
+
+---- TTL = 3 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 3 	 {'timestamp': 1761967817, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '199.109.111.9'}
+
+---- TTL = 4 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 4 	 {'timestamp': 1761967819, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '199.109.107.213'}
+
+---- TTL = 5 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 5 	 {'timestamp': 1761967820, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '199.109.107.145'}
+
+---- TTL = 6 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 6 	 {'timestamp': 1761967822, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '199.109.107.142'}
+
+---- TTL = 7 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 7 	 {'timestamp': 1761967824, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '199.109.107.118'}
+
+---- TTL = 8 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 8 	 {'timestamp': 1761967825, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '72.14.202.166'}
+
+---- TTL = 9 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 9 	 {'timestamp': 1761967827, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '142.251.225.89'}
+
+---- TTL = 10 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 10 	 {'timestamp': 1761967829, 'status': 'fail', 'rcode': -1, 'ip_list': [], 'is_timeout': True, 'device': '142.251.65.93'}
+
+---- TTL = 11 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 11 	 {'timestamp': 1761967831, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 12 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 12 	 {'timestamp': 1761967832, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 13 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 13 	 {'timestamp': 1761967834, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 14 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 14 	 {'timestamp': 1761967836, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 15 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 15 	 {'timestamp': 1761967837, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 16 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 16 	 {'timestamp': 1761967839, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 17 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 17 	 {'timestamp': 1761967841, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 18 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 18 	 {'timestamp': 1761967843, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 19 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 19 	 {'timestamp': 1761967844, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
+
+---- TTL = 20 ----
+=== TTL sweep facebook.com via 8.8.8.8 (dns) ===
+ttl = 20 	 {'timestamp': 1761967846, 'status': 'success', 'rcode': <Rcode.NOERROR: 0>, 'ip_list': ['57.144.180.1'], 'is_timeout': False, 'device': '*'}
