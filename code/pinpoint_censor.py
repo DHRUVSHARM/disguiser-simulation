@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import socket
 import dns.query
 import dns.message
@@ -5,7 +6,6 @@ import dns.name
 import dns.rdatatype
 import requests
 import ssl
-import base64
 import struct
 import OpenSSL
 import time
@@ -15,53 +15,109 @@ import sys
 from io import BytesIO
 from http.client import HTTPResponse
 from socket import error as SocketError
-import errno
 
 
+# ---------------------------------------------------------------------
+# ICMP helpers
+# ---------------------------------------------------------------------
+def get_port_from_icmp_packet(pkt: bytes, server_ip: str) -> int:
+    """
+    Try to recover the *source port* of our original TCP/UDP probe
+    from an ICMP Time Exceeded / Dest Unreachable message.
+
+    Layout is:
+      [outer IP][ICMP hdr][embedded IP][first 8 bytes of transport]
+
+    We only need the first 8 bytes of the embedded transport header,
+    so this should work even when routers send the minimum.
+    """
+    # need at least outer IP (20) + ICMP (8) + inner IP (20) + 4 bytes = 52
+    if len(pkt) < 52:
+        return 0
+
+    # outer IP header len
+    outer_ihl = (pkt[0] & 0x0F) * 4
+    if len(pkt) < outer_ihl + 8:
+        return 0
+
+    icmp_type = pkt[outer_ihl]
+    if icmp_type not in (3, 11):  # dest unreachable / time exceeded
+        return 0
+
+    # embedded IP starts right after ICMP header (8 bytes)
+    emb_ip_off = outer_ihl + 8
+    if len(pkt) < emb_ip_off + 20:
+        return 0
+
+    emb_ip = pkt[emb_ip_off:emb_ip_off + 20]
+    emb_ihl = (emb_ip[0] & 0x0F) * 4
+    if len(pkt) < emb_ip_off + emb_ihl + 4:
+        return 0
+
+    # (optional) check inner dst == server
+    inner_dst = emb_ip[16:20]
+    # we won't *require* it to match, campus nets sometimes mangle stuff
+    # if inner_dst != socket.inet_aton(server_ip):
+    #     return 0
+
+    # embedded transport header (tcp/udp) starts here
+    emb_trans_off = emb_ip_off + emb_ihl
+    emb_trans = pkt[emb_trans_off:emb_trans_off + 4]
+    if len(emb_trans) < 4:
+        return 0
+
+    sport = struct.unpack("!H", emb_trans[:2])[0]
+    return sport
 
 
+def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float = 1.5) -> str:
+    """
+    Listen for ICMP replies that correspond to our probe.
 
-# ICMP format in IP packet
-# data[:20] is IP header
-# data[20:24] is ICMP header: data[20:21] is type and when type == 11, Time-to-Live Exceeded
-# data[24:28] unused
-# data[28:48] original IP header, and data[44:48] is the destination IP address
-# data[48:] original TCP/UDP packet, and data[48:50] is the source port
+    - If we find one whose embedded source port == expected_sport -> return that router.
+    - If we only see unrelated ICMP (but still for us) -> return the first router we saw.
+    - If we see nothing -> return '*'
+    - If something blows up -> return '!'
+    """
+    deadline = time.time() + max_wait
+    last_seen = '*'
 
-def get_port_from_icmp_packet(data, server):
-    port = 0
-    ip_hex = b''.join(list(map(lambda x: struct.pack('!B', int(x)), server.split('.')))) 
+    try:
+        icmp_sock.settimeout(0.3)
+    except Exception:
+        pass
 
-    if len(data) > 50:
-        icmp_type = struct.unpack('!B', data[20:21])[0]
-        if icmp_type == 11 and ip_hex == data[44:48]:
-            port_hex = data[48 : 50]
-            port = int(port_hex.hex(), 16)
-
-    return port
-
-
-def get_router_ip(icmp_sock, port, max_wait=3.0):
-    end = time.time() + max_wait
-    last = '*'
-    while time.time() < end:
+    while time.time() < deadline:
         try:
-            data, addr = icmp_sock.recvfrom(1508)
-            icmp_port = get_port_from_icmp_packet(data, server)
-            # record first seen hop; prefer a matching-port hit
-            last = addr[0]
-            if port == icmp_port:
-                return addr[0]
+            pkt, addr = icmp_sock.recvfrom(4096)
         except socket.timeout:
             break
         except Exception:
-            break
-    return last
+            return '!'
+
+        # we got *some* ICMP for us
+        last_seen = addr[0]
+
+        port_from_icmp = get_port_from_icmp_packet(pkt, server)
+        if expected_sport and port_from_icmp == expected_sport:
+            # perfect match
+            return addr[0]
+
+        if port_from_icmp == 0:
+            # router didn’t give us ports, but it *is* the hop
+            return addr[0]
+
+        # else: we got an ICMP but port didn’t match → keep listening
+        # (somewhere along your campus path they *are* returning full payloads,
+        # so this loop can catch that)
+    return last_seen
 
 
-############################################# DNS Part ##########################################
+# ---------------------------------------------------------------------
+# DNS helpers
+# ---------------------------------------------------------------------
 def extract_ip_address(dns_response):
-    ip_list = list()
+    ip_list = []
     for rrset in dns_response.answer:
         if rrset.rdtype == dns.rdatatype.A:
             for rr in rrset:
@@ -69,54 +125,48 @@ def extract_ip_address(dns_response):
     return ip_list
 
 
-
 def process_raw_dns_response(raw_dns_response, is_timeout):
-    dns_result = dict()
-    dns_result['timestamp'] = int(time.time())
-    dns_result['status'] = 'success'
-    dns_result['rcode'] = -1
-    dns_result['ip_list'] = list()
-    dns_result['is_timeout'] = is_timeout
+    dns_result = {
+        'timestamp': int(time.time()),
+        'status': 'success',
+        'rcode': -1,
+        'ip_list': [],
+        'is_timeout': is_timeout,
+    }
 
     if not is_timeout:
         try:
             response_length = struct.unpack('!H', raw_dns_response[:2])[0]
             assert len(raw_dns_response[2:]) == response_length
-        
-        except:
+        except Exception:
             dns_result['status'] = 'fail'
-        
         else:
             try:
                 dns_response = dns.message.from_wire(raw_dns_response[2:])
                 rcode = dns_response.rcode()
                 dns_result['rcode'] = rcode
-                
                 if rcode == 0:
-                    ip_list = extract_ip_address(dns_response)
-                    dns_result['ip_list'] = ip_list
-            except:
+                    dns_result['ip_list'] = extract_ip_address(dns_response)
+            except Exception:
                 pass
     else:
         dns_result['status'] = 'fail'
 
-    
     return dns_result
 
 
-def dns_request(domain, server, ttl, timeout = 5):
+def dns_request(domain, server, ttl, timeout=5):
     qname = dns.name.from_text(domain)
     q = dns.message.make_query(qname, dns.rdatatype.A).to_wire()
-    q = struct.pack('!H', len(q)) + q  # prepend 2 bytes packet length
+    q = struct.pack('!H', len(q)) + q  # TCP DNS length prefix
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
-    icmp_sock.settimeout(3)  # was 1s
+    icmp_sock.settimeout(3)
 
     port = None
     try:
-        # set TTL **before** connect
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 53))
         port = sock.getsockname()[1]
@@ -125,39 +175,52 @@ def dns_request(domain, server, ttl, timeout = 5):
         raw_dns_response = sock.recv(1024)
         is_timeout = False
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_dns_response = b''
         is_timeout = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        addr = get_router_ip(icmp_sock, port or 0, server)
+    except OSError:
+        # THIS is the campus / TTL case: connect() blew up *before* we read ICMP
+        raw_dns_response = b''
+        is_timeout = True          # ← important: keep sweeping
+        addr = get_router_ip(icmp_sock, port or 0, server)
     except Exception:
         raw_dns_response = b''
-        is_timeout = False
-        addr = '!'
+        is_timeout = True
+        addr = get_router_ip(icmp_sock, port or 0, server)
     finally:
-        try: sock.close()
-        except: pass
-        try: icmp_sock.close()
-        except: pass
+        try:
+            sock.close()
+        except Exception:
+            pass
+        try:
+            icmp_sock.close()
+        except Exception:
+            pass
 
     dns_result = process_raw_dns_response(raw_dns_response, is_timeout)
     dns_result['device'] = addr
     return dns_result
 
 
-############################################# HTTP Part ##########################################
+# ---------------------------------------------------------------------
+# HTTP helpers
+# ---------------------------------------------------------------------
 def process_raw_http_response(raw_http_response, is_timeout):
-    http_result = dict()
-    http_result['timestamp'] = int(time.time())
-    http_result['status'] = 'success'
-    http_result['status_code'] = 0
-    http_result['text'] = ''
-    http_result['headers'] = dict()
-    http_result['is_timeout'] = is_timeout
+    http_result = {
+        'timestamp': int(time.time()),
+        'status': 'success',
+        'status_code': 0,
+        'text': '',
+        'headers': {},
+        'is_timeout': is_timeout,
+    }
 
     class FakeSocket():
         def __init__(self, response_bytes):
             self._file = BytesIO(response_bytes)
+
         def makefile(self, *args, **kwargs):
             return self._file
 
@@ -168,7 +231,7 @@ def process_raw_http_response(raw_http_response, is_timeout):
             source = FakeSocket(raw_http_response)
             response = HTTPResponse(source)
             response.begin()
-            http_result['text'] = response.read(len(raw_http_response)).decode()
+            http_result['text'] = response.read(len(raw_http_response)).decode(errors='replace')
             http_result['status_code'] = response.status
             http_result['headers'] = dict(response.getheaders())
     else:
@@ -187,7 +250,8 @@ def recvall(sock):
             break
     return data
 
-def http_request(domain, server, ttl, timeout = 5):
+
+def http_request(domain, server, ttl, timeout=5):
     request = f"GET / HTTP/1.1\r\nHost: {domain}\r\nUser-Agent: Mozilla/5.0\r\n\r\n".encode()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -197,72 +261,81 @@ def http_request(domain, server, ttl, timeout = 5):
 
     port = None
     try:
-        # set TTL **before** connect
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 80))
         port = sock.getsockname()[1]
 
         sock.send(request)
-        time.sleep(0.2)  # shorter; we just need initial response
+        time.sleep(0.2)
         raw_http_response = recvall(sock)
         is_timeout = False
 
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_http_response = b''
         is_timeout = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
-    except SocketError:
+        addr = get_router_ip(icmp_sock, port or 0, server)
+    except OSError:
         raw_http_response = b''
-        is_timeout = False
-        addr = '!'
+        is_timeout = True
+        addr = get_router_ip(icmp_sock, port or 0, server)
     except Exception:
         raw_http_response = b''
-        is_timeout = False
-        addr = '!'
+        is_timeout = True
+        addr = get_router_ip(icmp_sock, port or 0, server)
     finally:
-        try: sock.close()
-        except: pass
-        try: icmp_sock.close()
-        except: pass
+        try:
+            sock.close()
+        except Exception:
+            pass
+        try:
+            icmp_sock.close()
+        except Exception:
+            pass
 
     http_result = process_raw_http_response(raw_http_response, is_timeout)
     http_result['device'] = addr
     return http_result
 
 
-
-
-
-############################################# SNI Part ##########################################
-def sni_request(domain, server, ttl, timeout = 5):
+# ---------------------------------------------------------------------
+# SNI / TLS
+# ---------------------------------------------------------------------
+def sni_request(domain, server, ttl, timeout=5):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(3)
 
-    # You can keep PROTOCOL_TLS (warning is harmless), or use PROTOCOL_TLS_CLIENT on newer OpenSSL
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
-    sni_result = {'timestamp': int(time.time()), 'cert': '', 'cert_serial': '0',
-                  'status': 'success', 'is_timeout': False}
+    sni_result = {
+        'timestamp': int(time.time()),
+        'cert': '',
+        'cert_serial': '0',
+        'status': 'success',
+        'is_timeout': False
+    }
     wrapped_socket = None
     port = None
     try:
-        # set TTL **before** connect
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 443))
         port = sock.getsockname()[1]
 
         wrapped_socket = context.wrap_socket(sock, server_hostname=domain)
-        addr = get_router_ip(icmp_sock, port)
+        addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         sni_result['status'] = 'fail'
         sni_result['is_timeout'] = True
-        addr = get_router_ip(icmp_sock, port) if port is not None else '*'
+        addr = get_router_ip(icmp_sock, port or 0, server)
+    except OSError:
+        sni_result['status'] = 'fail'
+        sni_result['is_timeout'] = True
+        addr = get_router_ip(icmp_sock, port or 0, server)
     except Exception:
         sni_result['status'] = 'fail'
-        addr = '!'
+        addr = get_router_ip(icmp_sock, port or 0, server)
     else:
         try:
             sni_result['cert'] = ssl.DER_cert_to_PEM_cert(wrapped_socket.getpeercert(True))
@@ -275,24 +348,28 @@ def sni_request(domain, server, ttl, timeout = 5):
             if wrapped_socket:
                 wrapped_socket.shutdown(socket.SHUT_RDWR)
                 wrapped_socket.close()
-        except: pass
-        try: sock.close()
-        except: pass
-        try: icmp_sock.close()
-        except: pass
+        except Exception:
+            pass
+        try:
+            sock.close()
+        except Exception:
+            pass
+        try:
+            icmp_sock.close()
+        except Exception:
+            pass
 
     sni_result['device'] = addr
     return sni_result
 
 
-
-
-
+# ---------------------------------------------------------------------
+# main sweep
+# ---------------------------------------------------------------------
 protocol = sys.argv[1]
 domain = sys.argv[2]
 server = sys.argv[3]
 timeout = 2
-
 
 lower_ttl = 1
 upper_ttl = 60
@@ -301,21 +378,21 @@ if len(sys.argv) > 5:
     upper_ttl = int(sys.argv[5])
 
 for ttl in range(lower_ttl, upper_ttl + 1):
+    print(f"=== TTL sweep {domain} via {server} ({protocol}) ===")
     if protocol == 'dns':
         result = dns_request(domain, server, ttl, timeout)
     elif protocol == 'http':
         result = http_request(domain, server, ttl, timeout)
     elif protocol == 'sni':
         result = sni_request(domain, server, ttl, timeout)
-        result.pop('cert')
+        result.pop('cert', None)
     else:
         print('Wrong protocol!')
-        sys.exit(0)
-    
-    print('ttl = ' + str(ttl), '\t', result)
-    if result['is_timeout'] == False:
+        sys.exit(1)
+
+    print('ttl =', ttl, '\t', result)
+
+    # IMPORTANT: only break when we actually reached the target (no timeout AND success)
+    if result['is_timeout'] is False and result.get('status') == 'success' and result.get('ip_list'):
         break
-
-
-
 
