@@ -185,9 +185,13 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
 
     if not is_timeout:
         # the dns over tcp has a header of 2 bytes before the real payload 
-        # this is to indicate the lenfth of the response so we check if that is correct
+        # this is to indicate the length of the response so we check if that is correct
         try:
+            # this is a check that indicates that the packet we received, has a header where 
+            # we can extract and check the length by comparision
             response_length = struct.unpack('!H', raw_dns_response[:2])[0]
+            print(f"DEBUG: Promised Length (from header): {response_length}")
+            print(f"DEBUG: Actual Length (received data): {len(raw_dns_response[2:])}")
             assert len(raw_dns_response[2:]) == response_length
         except Exception:
             dns_result['status'] = 'fail'
@@ -196,19 +200,20 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
             try:
                 dns_response = dns.message.from_wire(raw_dns_response[2:])
                 rcode = dns_response.rcode()
+                # as mentioned above rcode can help understand more details on response
                 dns_result['rcode'] = rcode
                 if rcode == 0:
                     dns_result['ip_list'] = extract_ip_address(dns_response)
             except Exception:
                 pass
     else:
-        # no reply , timeout so mark simple fail
+        # no reply , timeout so mark simple fail , again a blanket sort of situation
         dns_result['status'] = 'fail'
 
     return dns_result
 
 
-def dns_request(domain, server, ttl, timeout=5):
+def dns_request(domain, server, ttl, timeout=10):
     """
     domain : domain we want to visit
     server : the resolver 
@@ -242,8 +247,11 @@ def dns_request(domain, server, ttl, timeout=5):
         is_timeout = False
         
         # get_router_ip gets the ip of the router that sent the ttl expired
+        # one thing to note here is icmp timeout and rst drops are kind of treated in a blanket way
+        # which may be an issue 
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
+        print("timeout icmp")
         raw_dns_response = b''
         is_timeout = True
         addr = get_router_ip(icmp_sock, port or 0, server)
@@ -349,7 +357,7 @@ def http_request(domain, server, ttl, timeout=5):
         raw_http_response = recvall(sock)
         is_timeout = False
 
-        # mark as not timeout and try to get ip
+        # mark as not timeout and try to get ipa
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_http_response = b''
