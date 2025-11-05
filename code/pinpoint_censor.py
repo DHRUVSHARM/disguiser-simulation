@@ -296,6 +296,8 @@ def process_raw_http_response(raw_http_response, is_timeout):
         'is_timeout': is_timeout,
     }
 
+    # thing with this is we are trying to take the response bytes, and 
+    # store it to use the http parser by simulating a fake live socket 
     class FakeSocket():
         def __init__(self, response_bytes):
             self._file = BytesIO(response_bytes)
@@ -308,6 +310,7 @@ def process_raw_http_response(raw_http_response, is_timeout):
             http_result['status'] = 'fail'
         else:
             source = FakeSocket(raw_http_response)
+            # this will make use of the parser 
             response = HTTPResponse(source)
             response.begin()
             http_result['text'] = response.read(len(raw_http_response)).decode(errors='replace')
@@ -384,7 +387,8 @@ def http_request(domain, server, ttl, timeout=5):
             icmp_sock.close()
         except Exception:
             pass
-
+    
+    # the idea is to parse the raw http byte response 
     http_result = process_raw_http_response(raw_http_response, is_timeout)
     http_result['device'] = addr
     return http_result
@@ -486,6 +490,7 @@ for ttl in range(lower_ttl, upper_ttl + 1):
         # querying using http protocol 
     elif protocol == 'http':
         result = http_request(domain, server, ttl, timeout)
+        # sni protocol 
     elif protocol == 'sni':
         result = sni_request(domain, server, ttl, timeout)
         result.pop('cert', None)
@@ -496,6 +501,6 @@ for ttl in range(lower_ttl, upper_ttl + 1):
     print('ttl =', ttl, '\t', result)
 
     # IMPORTANT: only break when we actually reached the target (no timeout AND success)
-    if result['is_timeout'] is False and result.get('status') == 'success' and result.get('ip_list'):
+    if result['is_timeout'] == False:
         break
 
