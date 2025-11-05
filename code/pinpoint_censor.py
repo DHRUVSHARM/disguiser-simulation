@@ -131,6 +131,7 @@ def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float =
 
         # we got *some* ICMP for us
         last_seen = addr[0]
+        print("expected source port : " , expected_sport) 
         print("last seen addr : " , last_seen)
 
         port_from_icmp = get_port_from_icmp_packet(pkt, server)
