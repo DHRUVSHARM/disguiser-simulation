@@ -482,7 +482,7 @@ upper_ttl = 60
 
 
 """
-For HTTP and SNI (HTTPS): server is the IP address of the web server where the page is hosted (e.g., the IP for boundhub.com).
+For HTTP and SNI (HTTPS): server is the IP address of the web server where the page is hosted.
 
 For DNS: No. In this case, server is the IP address of the DNS resolver 
 You're asking the resolver about the domain; you're not connecting to the domain's web server itself.
