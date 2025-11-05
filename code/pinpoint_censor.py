@@ -18,8 +18,18 @@ from socket import error as SocketError
 import errno
 
 
+"""
+for reference we can see these expected responses 
 
+| Event                          | What it means                                    | Example                            |
+| ------------------------------ | ------------------------------------------------ | ---------------------------------- |
+| ✅ **Success**                  | Packet reached destination normally.             | HTTP 200 OK, DNS A record returned |
+| ⚠️ **Timeout**                 | No response — could be dropped.                  | Packet never echoed or filtered    |
+| ❌ **RST (TCP Reset)**          | Some device injected a TCP Reset (active block). | Common in China’s GFW              |
+| ❌ **NXDOMAIN / altered DNS**   | DNS reply is forged or incorrect.                | Poisoned DNS cache                 |
+| ❌ **TLS alert / invalid cert** | HTTPS-level interference.                        | Man-in-the-middle block            |
 
+"""
 
 # ICMP format in IP packet
 # data[:20] is IP header
@@ -71,33 +81,50 @@ def extract_ip_address(dns_response):
 
 
 def process_raw_dns_response(raw_dns_response, is_timeout):
+    """
+    | RCODE name | Numeric | Meaning                                                |
+    | ---------- | ------- | ------------------------------------------------------ |
+    | `NOERROR`  | 0       | Domain exists – A record(s) returned                   |
+    | `NXDOMAIN` | 3       | “Non-existent domain” – resolver says it doesn’t exist |
+    | `SERVFAIL` | 2       | Server failure (resolver internal error)               |
+    | `REFUSED`  | 5       | Resolver refused to answer                             |
+    | timeout    | —       | No reply at all → possible drop/block                  |
+
+    """
     dns_result = dict()
-    dns_result['timestamp'] = int(time.time())
-    dns_result['status'] = 'success'
-    dns_result['rcode'] = -1
-    dns_result['ip_list'] = list()
+    dns_result['timestamp'] = int(time.time()) # record time
+    dns_result['status'] = 'success' # assume success
+    dns_result['rcode'] = -1 # unknown
+    dns_result['ip_list'] = list() 
     dns_result['is_timeout'] = is_timeout
 
     if not is_timeout:
+        # the dns over tcp has a header of 2 bytes before the real payload 
+        # this is to indicate the lenfth of the response so we check if that is correct
         try:
             response_length = struct.unpack('!H', raw_dns_response[:2])[0]
             assert len(raw_dns_response[2:]) == response_length
         
         except:
+            # packet parse failure
             dns_result['status'] = 'fail'
         
         else:
+            # get rcode from the dns response
             try:
                 dns_response = dns.message.from_wire(raw_dns_response[2:])
                 rcode = dns_response.rcode()
                 dns_result['rcode'] = rcode
                 
+                # rcode 0 means we have a valid ip returned , refer above for all codes
+                # NOTE : the stop condition of the probe is when we reach here or when all ttl probes are finsihed 
                 if rcode == 0:
                     ip_list = extract_ip_address(dns_response)
-                    dns_result['ip_list'] = ip_list
+                    dns_result['ip_list'] = ip_list # single domain can map to multiple ips hence we use a list
             except:
                 pass
     else:
+        # no reply , timeout so mark simple fail
         dns_result['status'] = 'fail'
 
     
@@ -105,12 +132,23 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
 
 
 def dns_request(domain, server, ttl, timeout = 5):
-    qname = dns.name.from_text(domain)
-    q = dns.message.make_query(qname, dns.rdatatype.A).to_wire()
-    q = struct.pack('!H', len(q)) + q  # prepend 2 bytes packet length
+    """
+    domain : domain we want to visit
+    server : the resolver 
+    """
 
+    # here we build the dns packet using dnspython toolkit
+    # converts domain to object of dns name type
+    qname = dns.name.from_text(domain)
+    # A-record query
+    q = dns.message.make_query(qname, dns.rdatatype.A).to_wire()
+    q = struct.pack('!H', len(q)) + q  # prepend 2 bytes packet length for tcp based dns
+
+    # 2 sockets created
+    # tcp over ipv4 to send dns query to resolver port 53
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
+    # listen to raw icmp packet for timeout response
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(3)  # was 1s
 
@@ -124,7 +162,8 @@ def dns_request(domain, server, ttl, timeout = 5):
         sock.send(q)
         raw_dns_response = sock.recv(1024)
         is_timeout = False
-
+        
+        # get_router_ip gets the ip of the router that sent the ttl expired
         addr = get_router_ip(icmp_sock, port)
     except socket.timeout:
         raw_dns_response = b''
@@ -188,6 +227,7 @@ def recvall(sock):
     return data
 
 def http_request(domain, server, ttl, timeout = 5):
+    # here we will try to make a get request to the given domain 
     request = f"GET / HTTP/1.1\r\nHost: {domain}\r\nUser-Agent: Mozilla/5.0\r\n\r\n".encode()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -294,15 +334,25 @@ server = sys.argv[3]
 timeout = 2
 
 
+# main driver here we have 3 different functions for three protocols
+
+# default ttl
 lower_ttl = 1
 upper_ttl = 60
+
+
 if len(sys.argv) > 5:
     lower_ttl = int(sys.argv[4])
     upper_ttl = int(sys.argv[5])
 
 for ttl in range(lower_ttl, upper_ttl + 1):
+
     if protocol == 'dns':
+        # NOTE : SUMMARY IS MAKE DNS QUERY PACKET for facebook.com destined to the DNS resolver (8.8.8.8 , FOR EX) (which will be our resolver) 
+        # QUICK NOTE : example usage would be :
+        #  python pinpoint_censor.py dns facebook.com 8.8.8.8 1 20 
         result = dns_request(domain, server, ttl, timeout)
+        # querying using http protocol 
     elif protocol == 'http':
         result = http_request(domain, server, ttl, timeout)
     elif protocol == 'sni':
