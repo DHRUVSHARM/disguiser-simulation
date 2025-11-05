@@ -134,11 +134,14 @@ def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float =
         print("last seen addr : " , last_seen)
 
         port_from_icmp = get_port_from_icmp_packet(pkt, server)
+        print("port from icmp packet : " , port_from_icmp)
         if expected_sport and port_from_icmp == expected_sport:
+            print("we received the port as a reply from the intermediate router returning address")
             # perfect match
             return addr[0]
 
         if port_from_icmp == 0:
+            print("not able to get the port from the icmp, but still giving the address returned from the icmp packet ")   
             # router didn’t give us ports, but it *is* the hop
             return addr[0]
 
