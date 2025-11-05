@@ -501,10 +501,13 @@ for ttl in range(lower_ttl, upper_ttl + 1):
         # QUICK NOTE : example usage would be :
         #  python pinpoint_censor.py dns facebook.com 8.8.8.8 1 20 
         result = dns_request(domain, server, ttl, timeout)
-        # querying using http protocol 
+        # querying using http protocol
+        # generally this should be the control server ip but here we will use facebook ip 
+        # python pinpoint_censor.py http facebook.com 157.240.241.35 1 20 
     elif protocol == 'http':
         result = http_request(domain, server, ttl, timeout)
         # sni protocol 
+        # python pinpoint_censor.py sni facebook.com 157.240.241.35 1 20
     elif protocol == 'sni':
         result = sni_request(domain, server, ttl, timeout)
         result.pop('cert', None)
@@ -512,7 +515,10 @@ for ttl in range(lower_ttl, upper_ttl + 1):
         print('Wrong protocol!')
         sys.exit(1)
 
-    print('ttl =', ttl, '\t', result)
+    print("\n-----------------------------------------------\n")
+    print('ttl =', ttl, '\t', result , '\n')
+    print(result)
+    print("\n-----------------------------------------------\n")
 
     # IMPORTANT: only break when we actually reached the target (no timeout AND success)
     if result['is_timeout'] == False:
