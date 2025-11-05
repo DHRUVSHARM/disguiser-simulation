@@ -131,6 +131,7 @@ def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float =
 
         # we got *some* ICMP for us
         last_seen = addr[0]
+        print("last seen addr : " , last_seen)
 
         port_from_icmp = get_port_from_icmp_packet(pkt, server)
         if expected_sport and port_from_icmp == expected_sport:
@@ -313,24 +314,36 @@ def recvall(sock):
 
 def http_request(domain, server, ttl, timeout=5):
     # here we will try to make a get request to the given domain 
+    # simple get request encoded to send over tcp 
     request = f"GET / HTTP/1.1\r\nHost: {domain}\r\nUser-Agent: Mozilla/5.0\r\n\r\n".encode()
 
+    # open tcp socket for sending http  
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
+    
+    # raw socket that will listen for the timeout ICMP packets 
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(3)
 
+    # since we have not makde the connection we do not know the port yet
     port = None
     try:
+        # IP_TTL means we are changing the ttl of the packet 
+        # stuff the passed ttl into the packet in binary format 
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
+        # use the socket to make connection to server on port 80
+        # do handshake
         sock.connect((server, 80))
+        # get port on our machine where the socket is if connected
         port = sock.getsockname()[1]
 
+        # send request 
         sock.send(request)
         time.sleep(0.2)
         raw_http_response = recvall(sock)
         is_timeout = False
 
+        # mark as not timeout and try to get ip
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_http_response = b''
