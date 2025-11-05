@@ -398,11 +398,14 @@ def http_request(domain, server, ttl, timeout=5):
 # SNI / TLS
 # ---------------------------------------------------------------------
 def sni_request(domain, server, ttl, timeout=5):
+
+    # tcp / icmp socket 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
     icmp_sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
     icmp_sock.settimeout(3)
 
+    # tls specs
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
     sni_result = {
@@ -419,6 +422,8 @@ def sni_request(domain, server, ttl, timeout=5):
         sock.connect((server, 443))
         port = sock.getsockname()[1]
 
+        # tls handshake + domain name 
+        # domain name in plain text is sent during client hello
         wrapped_socket = context.wrap_socket(sock, server_hostname=domain)
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
@@ -434,6 +439,7 @@ def sni_request(domain, server, ttl, timeout=5):
         addr = get_router_ip(icmp_sock, port or 0, server)
     else:
         try:
+            # store the certificate 
             sni_result['cert'] = ssl.DER_cert_to_PEM_cert(wrapped_socket.getpeercert(True))
             x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, sni_result['cert'])
             sni_result['cert_serial'] = str(x509.get_serial_number())
@@ -473,6 +479,14 @@ timeout = 2
 # default ttl
 lower_ttl = 1
 upper_ttl = 60
+
+
+"""
+For HTTP and SNI (HTTPS): server is the IP address of the web server where the page is hosted (e.g., the IP for boundhub.com).
+
+For DNS: No. In this case, server is the IP address of the DNS resolver 
+You're asking the resolver about the domain; you're not connecting to the domain's web server itself.
+"""
 
 
 if len(sys.argv) > 5:
