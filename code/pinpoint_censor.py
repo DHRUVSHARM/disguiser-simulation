@@ -234,6 +234,7 @@ def dns_request(domain, server, ttl, timeout=5):
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 53))
         port = sock.getsockname()[1]
+        print("dns connection, getting port from the socket details after connection ... (sock details)" , sock.getsockname())
 
         sock.send(q)
         raw_dns_response = sock.recv(1024)
