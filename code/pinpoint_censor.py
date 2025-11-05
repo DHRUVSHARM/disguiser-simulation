@@ -116,34 +116,41 @@ def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float =
     deadline = time.time() + max_wait
     last_seen = '*'
 
+    # try to set 0.3 om icmp sock
     try:
         icmp_sock.settimeout(0.3)
     except Exception:
         pass
-
+    
+    # idea here is to try to match the packet, basically poll for the 
+    # correct icmp 
     while time.time() < deadline:
+        # try recv from icmp socket (0.3 sec time)
         try:
             pkt, addr = icmp_sock.recvfrom(4096)
         except socket.timeout:
             break
         except Exception:
+            # error in listening to the icmp packet will give this as the device 
+            # some socket issue go back 
             return '!'
 
-        # we got *some* ICMP for us
+        # we got *some* ICMP for us, this maybe the on we are expecting 
         last_seen = addr[0]
         print("expected source port : " , expected_sport) 
         print("last seen addr : " , last_seen)
 
         port_from_icmp = get_port_from_icmp_packet(pkt, server)
         print("port from icmp packet : " , port_from_icmp)
-        if expected_sport and port_from_icmp == expected_sport:
-            print("we received the port as a reply from the intermediate router returning address")
-            # perfect match
+        # This is the ONLY check that should matter.
+        if expected_sport != 0 and port_from_icmp == expected_sport:
+            # Perfect match. This is the one.
             return addr[0]
-
-        if port_from_icmp == 0:
-            print("not able to get the port from the icmp, but still giving the address returned from the icmp packet ")   
-            # router didn’t give us ports, but it *is* the hop
+        
+        # If expected_sport is 0 (we're on a timeout path),
+        # then ANY packet with a valid port is probably ours.
+        if expected_sport == 0 and port_from_icmp != 0:
+            # This is the hop.
             return addr[0]
 
         # else: we got an ICMP but port didn’t match → keep listening
@@ -189,6 +196,7 @@ def process_raw_dns_response(raw_dns_response, is_timeout):
         try:
             # this is a check that indicates that the packet we received, has a header where 
             # we can extract and check the length by comparision
+            # but this can be a false positive , we do not have a ground truth 
             response_length = struct.unpack('!H', raw_dns_response[:2])[0]
             print(f"DEBUG: Promised Length (from header): {response_length}")
             print(f"DEBUG: Actual Length (received data): {len(raw_dns_response[2:])}")
@@ -251,6 +259,7 @@ def dns_request(domain, server, ttl, timeout=10):
         # which may be an issue 
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
+        # tcp socket timed out 
         print("timeout icmp")
         raw_dns_response = b''
         is_timeout = True
@@ -357,7 +366,7 @@ def http_request(domain, server, ttl, timeout=5):
         raw_http_response = recvall(sock)
         is_timeout = False
 
-        # mark as not timeout and try to get ipa
+        # mark as not timeout and try to get ip, however since there will be no timeout this device will be marked as *
         addr = get_router_ip(icmp_sock, port, server)
     except socket.timeout:
         raw_http_response = b''
