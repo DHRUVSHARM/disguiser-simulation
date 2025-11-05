@@ -231,6 +231,7 @@ def dns_request(domain, server, ttl, timeout=5):
 
     port = None
     try:
+        print("here")
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
         sock.connect((server, 53))
         port = sock.getsockname()[1]
