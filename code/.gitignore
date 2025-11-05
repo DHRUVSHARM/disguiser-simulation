@@ -1,0 +1,7 @@
+.venv/
+debug_trace.log
+icmp_trace.pcap
+sweep_log.txt
+*.pcap
+*.log
+.venv/
