@@ -68,6 +68,15 @@ def get_port_from_icmp_packet(pkt: bytes, server_ip: str) -> int:
 
     sport = struct.unpack("!H", emb_trans[:2])[0]
     return sport
+
+
+# ICMP format in IP packet
+# data[:20] is IP header
+# data[20:24] is ICMP header: data[20:21] is type and when type == 11, Time-to-Live Exceeded
+# data[24:28] unused
+# data[28:48] original IP header, and data[44:48] is the destination IP address
+# data[48:] original TCP/UDP packet, and data[48:50] is the source port
+
 import errno
 
 
@@ -83,25 +92,6 @@ for reference we can see these expected responses
 | ❌ **TLS alert / invalid cert** | HTTPS-level interference.                        | Man-in-the-middle block            |
 
 """
-
-# ICMP format in IP packet
-# data[:20] is IP header
-# data[20:24] is ICMP header: data[20:21] is type and when type == 11, Time-to-Live Exceeded
-# data[24:28] unused
-# data[28:48] original IP header, and data[44:48] is the destination IP address
-# data[48:] original TCP/UDP packet, and data[48:50] is the source port
-
-def get_port_from_icmp_packet(data, server):
-    port = 0
-    ip_hex = b''.join(list(map(lambda x: struct.pack('!B', int(x)), server.split('.')))) 
-
-    if len(data) > 50:
-        icmp_type = struct.unpack('!B', data[20:21])[0]
-        if icmp_type == 11 and ip_hex == data[44:48]:
-            port_hex = data[48 : 50]
-            port = int(port_hex.hex(), 16)
-
-    return port
 
 
 def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float = 1.5) -> str:
@@ -145,13 +135,18 @@ def get_router_ip(icmp_sock, expected_sport: int, server: str, max_wait: float =
         # This is the ONLY check that should matter.
         if expected_sport != 0 and port_from_icmp == expected_sport:
             # Perfect match. This is the one.
+            print("perfect match : (icmp port, expected) " , port_from_icmp , " " , expected_sport)
             return addr[0]
         
         # If expected_sport is 0 (we're on a timeout path),
         # then ANY packet with a valid port is probably ours.
         if expected_sport == 0 and port_from_icmp != 0:
             # This is the hop.
+            print("timeout, picking the ip got back from icmp " , port_from_icmp , " " , expected_sport)
             return addr[0]
+        
+        if port_from_icmp == 0:
+            print("the icmp port extraction was unsuccessful")
 
         # else: we got an ICMP but port didn’t match → keep listening
         # (somewhere along your campus path they *are* returning full payloads,
